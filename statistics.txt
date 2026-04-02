@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be_Vietnam_Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#5f6056",
+              "surface-variant": "#e2e4d8",
+              "surface-dim": "#d9dbd0",
+              "secondary-fixed-dim": "#c2dcb9",
+              "on-primary-container": "#3e5839",
+              "on-surface": "#30332c",
+              "on-secondary-fixed": "#30452b",
+              "surface-container-low": "#f4f4eb",
+              "error": "#a73b21",
+              "surface-tint": "#4b6646",
+              "inverse-surface": "#0d0f0b",
+              "surface-container-highest": "#e2e4d8",
+              "background": "#fafaf3",
+              "surface-bright": "#fafaf3",
+              "secondary-dim": "#43593e",
+              "on-tertiary-container": "#616157",
+              "error-dim": "#791903",
+              "primary-dim": "#3f5a3a",
+              "tertiary-container": "#fefdef",
+              "tertiary-dim": "#53544a",
+              "surface": "#fafaf3",
+              "inverse-primary": "#ddfdd2",
+              "on-primary-fixed-variant": "#486242",
+              "outline": "#797c72",
+              "on-secondary": "#ebffe1",
+              "on-error": "#fff7f6",
+              "on-secondary-fixed-variant": "#4b6146",
+              "secondary-fixed": "#d0eac6",
+              "primary-fixed-dim": "#beddb5",
+              "outline-variant": "#b1b3a8",
+              "secondary": "#4f6549",
+              "on-background": "#30332c",
+              "inverse-on-surface": "#9d9d97",
+              "on-error-container": "#6e1400",
+              "on-secondary-container": "#42573c",
+              "surface-container": "#eeefe5",
+              "error-container": "#fd795a",
+              "on-surface-variant": "#5d6057",
+              "primary": "#4b6646",
+              "secondary-container": "#d0eac6",
+              "on-tertiary-fixed": "#4f4f46",
+              "on-tertiary-fixed-variant": "#6c6c62",
+              "on-primary-fixed": "#2c4528",
+              "primary-container": "#ccebc2",
+              "surface-container-high": "#e8e9df",
+              "on-tertiary": "#fbf9ec",
+              "primary-fixed": "#ccebc2",
+              "tertiary-fixed": "#fefdef",
+              "on-primary": "#eaffe1",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-fixed-dim": "#f0eee1"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Be Vietnam Pro"],
+              "label": ["Be Vietnam Pro"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hand-drawn-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 3s linear forwards;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fafaf3]/80 backdrop-blur-xl flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#4b6646]" data-icon="inventory_2">inventory_2</span>
+<h1 class="font-['Plus_Jakarta_Sans'] font-extrabold text-xl text-[#4b6646] tracking-tight">MAD收纳</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-[#5f6056] hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="text-[#5f6056] hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto space-y-10">
+<!-- Header Section -->
+<section class="flex flex-col gap-6">
+<div class="flex justify-between items-end">
+<h2 class="font-headline text-3xl font-bold tracking-tight text-on-surface">消费统计</h2>
+<div class="bg-surface-container-low p-1 rounded-full flex gap-1">
+<button class="px-4 py-1.5 rounded-full text-sm font-medium transition-all text-on-surface-variant hover:text-primary">周</button>
+<button class="px-4 py-1.5 rounded-full text-sm font-medium transition-all bg-primary-container text-on-primary-container shadow-sm">月</button>
+<button class="px-4 py-1.5 rounded-full text-sm font-medium transition-all text-on-surface-variant hover:text-primary">年</button>
+</div>
+</div>
+<!-- Overview Cards (Asymmetric Bento) -->
+<div class="grid grid-cols-2 gap-4">
+<div class="col-span-2 bg-primary-container/40 p-6 rounded-lg relative overflow-hidden">
+<div class="relative z-10">
+<p class="text-sm font-medium text-on-primary-container/80 mb-1">本月总花费</p>
+<h3 class="font-headline text-4xl font-extrabold text-on-primary-container">¥12,480.00</h3>
+<div class="mt-4 flex items-center gap-2 text-xs font-semibold text-primary">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span>较上月增长 12.5%</span>
+</div>
+</div>
+<!-- Hand-drawn decorative element -->
+<svg class="absolute -right-4 -bottom-4 w-32 h-32 text-primary/10" viewbox="0 0 100 100">
+<path class="hand-drawn-path" d="M10,90 Q30,10 90,40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg">
+<p class="text-xs font-medium text-tertiary mb-1">总资产估值</p>
+<h4 class="font-headline text-xl font-bold text-on-surface">¥45.2w</h4>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg">
+<p class="text-xs font-medium text-tertiary mb-1">平均日支出</p>
+<h4 class="font-headline text-xl font-bold text-on-surface">¥416.00</h4>
+</div>
+</div>
+</section>
+<!-- Charts Section -->
+<section class="space-y-6">
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline font-bold text-lg">消费趋势 (近30天)</h3>
+<span class="text-xs text-tertiary italic">手绘视图</span>
+</div>
+<div class="h-48 w-full relative flex items-end justify-between px-2">
+<!-- Simple Hand-drawn Style Line Chart Simulation -->
+<svg class="w-full h-full text-primary overflow-visible" viewbox="0 0 300 100">
+<path class="hand-drawn-path" d="M0,80 Q20,75 40,85 T80,60 T120,70 T160,40 T200,50 T240,20 T300,30" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<!-- Reference horizontal lines (Ghost borders) -->
+<line stroke="currentColor" stroke-opacity="0.05" x1="0" x2="300" y1="20" y2="20"></line>
+<line stroke="currentColor" stroke-opacity="0.05" x1="0" x2="300" y1="50" y2="50"></line>
+<line stroke="currentColor" stroke-opacity="0.05" x1="0" x2="300" y1="80" y2="80"></line>
+</svg>
+</div>
+<div class="flex justify-between mt-4 text-[10px] text-tertiary font-medium">
+<span>10月01日</span>
+<span>10月15日</span>
+<span>今天</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-lg shadow-sm grid grid-cols-5 gap-6 items-center">
+<div class="col-span-2 relative aspect-square">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e2e4d8" stroke-width="3"></path>
+<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#4b6646" stroke-dasharray="45, 100" stroke-width="3"></path>
+<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ccebc2" stroke-dasharray="25, 100" stroke-dashoffset="-45" stroke-width="3"></path>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-[10px] text-tertiary">主类目</span>
+<span class="font-bold text-sm">数码</span>
+</div>
+</div>
+<div class="col-span-3 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-xs font-medium">数码产品</span>
+</div>
+<span class="text-xs font-bold">45%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="text-xs font-medium">家居收纳</span>
+</div>
+<span class="text-xs font-bold">25%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-surface-variant"></div>
+<span class="text-xs font-medium">服饰箱包</span>
+</div>
+<span class="text-xs font-bold">30%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Rankings Section -->
+<section class="space-y-8">
+<div>
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-headline font-bold text-lg">最贵物品 TOP 5</h3>
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="diamond">diamond</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4 group">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex-shrink-0 overflow-hidden">
+<img alt="MacBook" class="w-full h-full object-cover" data-alt="professional workspace setup with a sleek laptop on a minimalist desk under soft warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2mhYQQInK_YMw2HigmR-03VWJ_vtDH5e4NDgyAl8DiWtEmuM2QrMCvFuYzskrjI1jdNtvvkpSDdVVPnl2GbVnjsdLyx7u26N4nUwlUTw6kNj37B4mauO49gEClKQr_PQz-OX7V2Pgndj-lQcQZkOhCGdanLUC8Csfd0lK8QidPlYA2OIHBihf4PZ-Tp3tvuA05b9iVfiCjFnR2FDksu7hB1v6zsvWCRC7WTutRnppSVizTjww5dtVJVt8R4T4Gp9mRIKhbDkK8Lw"/>
+</div>
+<div class="flex-grow">
+<h4 class="text-sm font-semibold">MacBook Pro 14'</h4>
+<p class="text-[10px] text-tertiary">购于 2023-05-12</p>
+</div>
+<span class="font-headline font-bold text-on-surface">¥16,999</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex-shrink-0 overflow-hidden">
+<img alt="Herman Miller" class="w-full h-full object-cover" data-alt="ergonomic designer office chair in a bright airy studio apartment with large windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAejpFRjEAyx_hiZS3UU_JppKsj20amhWf4ssg8C8-Ho1CYhh_WyA2RBg-g8je2Hft6y8J8xWPOq6bZ07dntWYtRzZaGMH9jAN91i6ugVkmQpNSyOl9wL6Rwizq51JIJWL3x8iDvm8vI5Z4Z2GoCGxH7scG1AZsmmnST-ZNibBt7tRwBLQ-me-_nNqBShoYES0yJtDcyt52yNg0Hxnnp2v1vLgpxlSgfB479kIP4BI8p-6pUGEI7WxDg7K1ePx6MdS7RgxHUftGdGw"/>
+</div>
+<div class="flex-grow">
+<h4 class="text-sm font-semibold">Aeron 人体工学椅</h4>
+<p class="text-[10px] text-tertiary">购于 2023-08-20</p>
+</div>
+<span class="font-headline font-bold text-on-surface">¥11,200</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex-shrink-0 overflow-hidden">
+<img alt="iPad" class="w-full h-full object-cover" data-alt="high-end tablet device with digital pen on a white surface with soft organic shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAt870bO6N5GFSKxyjjY1wE2MafOY0Fpq_gtNi8U7PdQVFcq-sgrN2HW15YzuxfsAeiF1Ylf8qY6jjVoAettbUPZI_dXZ--G6C8q_rHZl0-6wCBt0PU4AI2RGf6WMSQg-BJp-z8GRE34X5oYnXRrTm0jZ_iUoJ-LClAXHbkQY9k7hNP_-DYlHIB8xd6wEbDEPQOHrAsbxtTT-KJ3kheb88ebcKtL9qYb6zcjeoZmBPJ-HGvDgY-j_egHaOYOTeQ-ssdmILTdWY3gPA"/>
+</div>
+<div class="flex-grow">
+<h4 class="text-sm font-semibold">iPad Pro 12.9</h4>
+<p class="text-[10px] text-tertiary">购于 2023-02-15</p>
+</div>
+<span class="font-headline font-bold text-on-surface">¥8,499</span>
+</div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-headline font-bold text-lg">性价比排行</h3>
+<div class="flex items-center gap-1 text-tertiary text-xs">
+<span>日均使用成本</span>
+<span class="material-symbols-outlined text-sm" data-icon="help_outline">help_outline</span>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<div class="bg-surface-container p-4 rounded-lg flex items-center justify-between border-l-4 border-primary">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="coffee">coffee</span>
+</div>
+<div>
+<h4 class="text-sm font-bold">手冲咖啡壶</h4>
+<p class="text-[10px] text-tertiary">使用 450 次</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-primary font-bold">¥0.8</span>
+<span class="text-[10px] text-tertiary block">/ 天</span>
+</div>
+</div>
+<div class="bg-surface-container p-4 rounded-lg flex items-center justify-between border-l-4 border-secondary-fixed-dim">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="keyboard">keyboard</span>
+</div>
+<div>
+<h4 class="text-sm font-bold">机械键盘</h4>
+<p class="text-[10px] text-tertiary">使用 320 次</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-on-surface font-bold">¥2.1</span>
+<span class="text-[10px] text-tertiary block">/ 天</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-[2rem] bg-[#fafaf3]/80 backdrop-blur-xl shadow-[0_-4px_20px_0_rgba(0,0,0,0.04)] flex justify-around items-center px-4 pb-6 pt-3 w-full">
+<div class="flex flex-col items-center justify-center text-[#5f6056] px-4 py-1 hover:text-[#4b6646] transition-colors">
+<span class="material-symbols-outlined" data-icon="home_app_logo">home_app_logo</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">首页</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#5f6056] px-4 py-1 hover:text-[#4b6646] transition-colors">
+<span class="material-symbols-outlined" data-icon="Category">category</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">物品</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#5f6056] px-4 py-1 hover:text-[#4b6646] transition-colors">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">区域</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#ccebc2] text-[#4b6646] rounded-full px-4 py-1 active:scale-90 duration-300 ease-out">
+<span class="material-symbols-outlined" data-icon="leaderboard" data-weight="fill" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">统计</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#5f6056] px-4 py-1 hover:text-[#4b6646] transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">设置</span>
+</div>
+</nav>
+</body></html>

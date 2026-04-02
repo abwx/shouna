@@ -1,0 +1,319 @@
+/* 全局变量 */
+/* 颜色变量 - 基于设计稿 (home.txt) */
+/* 深绿色 - 主色 */
+/* 暗绿色 - 主色变体 */
+/* 浅绿色 - 主容器色 */
+/* 次级色 */
+/* 灰绿色 - 辅助/文字色 */
+/* 米白色 - 页面背景 */
+/* 深色 - 主要文字 */
+/* 变体色 - 次要文字 */
+/* 深绿色 - 容器内文字 */
+/* 浅米色 - 卡片背景 */
+/* 中米色 - 输入框/按钮背景 */
+/* 深米色 - 搜索框等背景 */
+/* 最深米色 - 分割线等 */
+/* 纯白 */
+/* 变体色 - 描边/背景 */
+/* 页面统一边距 */
+/* 兼容 uni-app 默认变量 */
+/* 文字尺寸 */
+/* 圆角 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.page-items {
+  background-color: #fafaf3;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* 顶部导航 */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 88rpx;
+  padding: 0 48rpx;
+  padding-top: var(--status-bar-height);
+  background-color: rgba(250, 250, 243, 0.8);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+.nav-bar .nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+.nav-bar .nav-left .nav-title {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #4b6646;
+  letter-spacing: -1rpx;
+}
+.main-content {
+  flex: 1;
+  padding-top: calc(120rpx + var(--status-bar-height));
+}
+.content-wrapper {
+  padding: 0 48rpx;
+}
+
+/* 页面标题 & 筛选 */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40rpx;
+}
+.header-section .sub-title {
+  font-size: 24rpx;
+  color: #5f6056;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 8rpx;
+}
+.header-section .main-title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #30332c;
+  display: block;
+}
+.header-section .filter-btn {
+  width: 96rpx;
+  height: 96rpx;
+  background-color: #eeefe5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 搜索框 */
+.search-section {
+  margin-bottom: 24rpx;
+}
+.search-section .search-input-wrapper {
+  background-color: #e8e9df;
+  height: 100rpx;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 32rpx;
+  gap: 16rpx;
+}
+.search-section .search-input-wrapper .search-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #30332c;
+}
+
+/* 活动筛选 */
+.active-filters {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  margin-bottom: 40rpx;
+}
+.active-filters .filter-tag {
+  background-color: #ccebc2;
+  padding: 8rpx 24rpx;
+  border-radius: 100rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+.active-filters .filter-tag text {
+  font-size: 24rpx;
+  color: #4b6646;
+  font-weight: 600;
+}
+.active-filters .clear-all {
+  font-size: 24rpx;
+  color: #5f6056;
+  text-decoration: underline;
+}
+
+/* 分类选项卡 */
+.category-tabs {
+  margin: 0 -48rpx;
+  margin-bottom: 40rpx;
+  width: 100vw;
+}
+.category-tabs .tabs-list {
+  display: inline-flex;
+  padding: 0 48rpx;
+  gap: 20rpx;
+}
+.category-tabs .tab-item {
+  padding: 16rpx 48rpx;
+  background-color: #eeefe5;
+  border-radius: 100rpx;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.category-tabs .tab-item text {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #5f6056;
+}
+.category-tabs .tab-item.active {
+  background-color: #4b6646;
+}
+.category-tabs .tab-item.active text {
+  color: #fff;
+}
+
+/* 物品列表 */
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  margin-bottom: 60rpx;
+}
+.items-list .item-row {
+  background-color: #ffffff;
+  border-radius: 32rpx;
+  padding: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+}
+.items-list .item-row:active {
+  transform: scale(0.98);
+  background-color: #f4f4eb;
+}
+.items-list .item-row .img-box {
+  position: relative;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: #eeefe5;
+}
+.items-list .item-row .img-box .item-img {
+  width: 100%;
+  height: 100%;
+}
+.items-list .item-row .img-box .fav-badge {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  background-color: #4b6646;
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx solid #fff;
+}
+.items-list .item-row .info-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+.items-list .item-row .info-content .top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.items-list .item-row .info-content .top-row .item-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #30332c;
+}
+.items-list .item-row .info-content .top-row .item-price {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #4b6646;
+}
+.items-list .item-row .info-content .location-info {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+.items-list .item-row .info-content .location-info .location-text {
+  font-size: 24rpx;
+  color: #5f6056;
+}
+.items-list .item-row .info-content .tag-row {
+  display: flex;
+  gap: 12rpx;
+}
+.items-list .item-row .info-content .tag-row .item-tag {
+  font-size: 20rpx;
+  padding: 4rpx 16rpx;
+  background-color: rgba(75, 102, 70, 0.1);
+  color: #4b6646;
+  border-radius: 8rpx;
+  font-weight: 600;
+}
+.items-list .item-row .info-content .tag-row .item-tag.secondary {
+  background-color: #e8e9df;
+  color: #5f6056;
+}
+.items-list .item-row .info-content .tag-row .expiry-badge {
+  font-size: 20rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  font-weight: 700;
+}
+.items-list .item-row .arrow-box {
+  padding-left: 8rpx;
+}
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 200rpx;
+  gap: 24rpx;
+}
+.empty-state .empty-text {
+  font-size: 28rpx;
+  color: #5f6056;
+}
+.deco-box {
+  display: flex;
+  justify-content: center;
+  padding: 40rpx 0;
+  transform: rotate(15deg);
+}
+.footer-spacer {
+  height: 240rpx;
+}
+
+/* FAB */
+.fab-btn {
+  position: fixed;
+  right: 48rpx;
+  bottom: 240rpx;
+  width: 128rpx;
+  height: 128rpx;
+  background-color: #4b6646;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(75, 102, 70, 0.3);
+  z-index: 90;
+  transition: transform 0.2s;
+}
+.fab-btn:active {
+  transform: scale(0.9);
+}

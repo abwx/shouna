@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Be_Vietnam_Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#5f6056",
+              "surface-variant": "#e2e4d8",
+              "surface-dim": "#d9dbd0",
+              "secondary-fixed-dim": "#c2dcb9",
+              "on-primary-container": "#3e5839",
+              "on-surface": "#30332c",
+              "on-secondary-fixed": "#30452b",
+              "surface-container-low": "#f4f4eb",
+              "error": "#a73b21",
+              "surface-tint": "#4b6646",
+              "inverse-surface": "#0d0f0b",
+              "surface-container-highest": "#e2e4d8",
+              "background": "#fafaf3",
+              "surface-bright": "#fafaf3",
+              "secondary-dim": "#43593e",
+              "on-tertiary-container": "#616157",
+              "error-dim": "#791903",
+              "primary-dim": "#3f5a3a",
+              "tertiary-container": "#fefdef",
+              "tertiary-dim": "#53544a",
+              "surface": "#fafaf3",
+              "inverse-primary": "#ddfdd2",
+              "on-primary-fixed-variant": "#486242",
+              "outline": "#797c72",
+              "on-secondary": "#ebffe1",
+              "on-error": "#fff7f6",
+              "on-secondary-fixed-variant": "#4b6146",
+              "secondary-fixed": "#d0eac6",
+              "primary-fixed-dim": "#beddb5",
+              "outline-variant": "#b1b3a8",
+              "secondary": "#4f6549",
+              "on-background": "#30332c",
+              "inverse-on-surface": "#9d9d97",
+              "on-error-container": "#6e1400",
+              "on-secondary-container": "#42573c",
+              "surface-container": "#eeefe5",
+              "error-container": "#fd795a",
+              "on-surface-variant": "#5d6057",
+              "primary": "#4b6646",
+              "secondary-container": "#d0eac6",
+              "on-tertiary-fixed": "#4f4f46",
+              "on-tertiary-fixed-variant": "#6c6c62",
+              "on-primary-fixed": "#2c4528",
+              "primary-container": "#ccebc2",
+              "surface-container-high": "#e8e9df",
+              "on-tertiary": "#fbf9ec",
+              "primary-fixed": "#ccebc2",
+              "tertiary-fixed": "#fefdef",
+              "on-primary": "#eaffe1",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-fixed-dim": "#f0eee1"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Be Vietnam Pro"],
+              "label": ["Be Vietnam Pro"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .dashed-border {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='32' ry='32' stroke='%23b1b3a8' stroke-width='2' stroke-dasharray='8%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 2rem;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top AppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fafaf3]/80 dark:bg-stone-900/80 backdrop-blur-xl flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#4b6646] dark:text-[#ccebc2]">arrow_back_ios_new</span>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold text-lg tracking-tight text-[#4b6646] dark:text-[#ccebc2]">添加物品</h1>
+</div>
+<button class="text-[#4b6646] dark:text-[#ccebc2] font-semibold text-base hover:opacity-80 transition-opacity">保存</button>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-md mx-auto">
+<!-- Image Upload Area -->
+<section class="mb-10">
+<div class="dashed-border w-full aspect-square flex flex-col items-center justify-center bg-surface-container-low group cursor-pointer transition-all active:scale-95 duration-200">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-3xl">add_a_photo</span>
+</div>
+<p class="text-on-surface-variant font-medium">点击上传物品照片</p>
+<p class="text-tertiary text-xs mt-1">支持 JPG, PNG, HEIC</p>
+</div>
+</section>
+<!-- Form Sections -->
+<div class="space-y-8">
+<!-- Basic Info Card -->
+<div class="bg-surface-container-lowest rounded-lg p-6 space-y-6">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-tertiary ml-1">物品名称</label>
+<input class="w-full bg-surface-container-high border-none rounded-DEFAULT px-4 py-3 focus:ring-2 focus:ring-primary/20 placeholder:text-outline-variant" placeholder="输入物品名称..." type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-tertiary ml-1">价格 (¥)</label>
+<input class="w-full bg-surface-container-high border-none rounded-DEFAULT px-4 py-3 focus:ring-2 focus:ring-primary/20 placeholder:text-outline-variant" placeholder="0.00" type="number"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-tertiary ml-1">购入日期</label>
+<div class="relative">
+<input class="w-full bg-surface-container-high border-none rounded-DEFAULT px-4 py-3 focus:ring-2 focus:ring-primary/20 text-on-surface-variant" type="date"/>
+</div>
+</div>
+</div>
+</div>
+<!-- ROI Calculation Section (Asymmetric Highlight) -->
+<div class="relative bg-primary-container/30 rounded-lg p-6 overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-10">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'FILL' 1;">calculate</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<h2 class="font-bold text-on-primary-container">成本估算</h2>
+</div>
+<div class="space-y-4">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-on-primary-container/70 ml-1">预计使用天数</label>
+<input class="w-full bg-surface-container-lowest/60 border-none rounded-DEFAULT px-4 py-3 focus:ring-2 focus:ring-primary/20" placeholder="365" type="number"/>
+</div>
+<div class="flex items-baseline justify-between pt-2">
+<span class="text-sm text-on-primary-container/80">预估日均成本</span>
+<div class="text-right">
+<span class="text-2xl font-bold text-primary">¥ 0.00</span>
+<span class="text-xs text-on-primary-container/60 ml-1">/天</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Selection Grid -->
+<div class="space-y-6">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<label class="text-xs font-semibold text-tertiary ml-1">存放区域</label>
+<span class="material-symbols-outlined text-outline text-sm">chevron_right</span>
+</div>
+<div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+<button class="flex-none px-5 py-2 rounded-full bg-primary text-on-primary text-sm font-medium">客厅</button>
+<button class="flex-none px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-medium">卧室</button>
+<button class="flex-none px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-medium">厨房</button>
+<button class="flex-none px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant text-sm font-medium">书房</button>
+<button class="flex-none w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-xl">add</span>
+</button>
+</div>
+</div>
+<div class="space-y-3">
+<label class="text-xs font-semibold text-tertiary ml-1">标签</label>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1.5 rounded-lg bg-secondary-container text-on-secondary-container text-xs font-medium flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                            数码产品
+                        </span>
+<span class="px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface-variant text-xs font-medium">
+                            高频使用
+                        </span>
+<span class="px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface-variant text-xs font-medium">
+                            易碎品
+                        </span>
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/30 text-outline text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">add</span>
+                            添加标签
+                        </button>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-tertiary ml-1">备注</label>
+<textarea class="w-full bg-surface-container-high border-none rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary/20 placeholder:text-outline-variant text-sm" placeholder="记录关于物品的故事或保养方式..." rows="4"></textarea>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Action Area -->
+<footer class="fixed bottom-0 w-full z-50 bg-[#fafaf3]/80 dark:bg-stone-900/80 backdrop-blur-xl px-6 pb-8 pt-4">
+<button class="w-full h-14 bg-gradient-to-r from-primary to-primary-dim text-on-primary rounded-full font-bold text-base shadow-[0_8px_30px_rgb(75,102,70,0.2)] active:scale-95 transition-transform duration-200">
+            确认保存
+        </button>
+</footer>
+<!-- Decorative Hand-drawn Flourish (Scribble) -->
+<div class="fixed top-32 right-4 pointer-events-none opacity-20 rotate-12">
+<svg fill="none" height="60" viewbox="0 0 100 100" width="60" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 50C10 50 30 10 50 10C70 10 90 50 90 50C90 50 70 90 50 90C30 90 10 50 10 50Z" stroke="#5f6056" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="50" cy="50" r="15" stroke="#5f6056" stroke-width="2"></circle>
+</svg>
+</div>
+</body></html>

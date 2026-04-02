@@ -1,0 +1,289 @@
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Be_Vietnam_Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#5f6056",
+              "surface-variant": "#e2e4d8",
+              "surface-dim": "#d9dbd0",
+              "secondary-fixed-dim": "#c2dcb9",
+              "on-primary-container": "#3e5839",
+              "on-surface": "#30332c",
+              "on-secondary-fixed": "#30452b",
+              "surface-container-low": "#f4f4eb",
+              "error": "#a73b21",
+              "surface-tint": "#4b6646",
+              "inverse-surface": "#0d0f0b",
+              "surface-container-highest": "#e2e4d8",
+              "background": "#fafaf3",
+              "surface-bright": "#fafaf3",
+              "secondary-dim": "#43593e",
+              "on-tertiary-container": "#616157",
+              "error-dim": "#791903",
+              "primary-dim": "#3f5a3a",
+              "tertiary-container": "#fefdef",
+              "tertiary-dim": "#53544a",
+              "surface": "#fafaf3",
+              "inverse-primary": "#ddfdd2",
+              "on-primary-fixed-variant": "#486242",
+              "outline": "#797c72",
+              "on-secondary": "#ebffe1",
+              "on-error": "#fff7f6",
+              "on-secondary-fixed-variant": "#4b6146",
+              "secondary-fixed": "#d0eac6",
+              "primary-fixed-dim": "#beddb5",
+              "outline-variant": "#b1b3a8",
+              "secondary": "#4f6549",
+              "on-background": "#30332c",
+              "inverse-on-surface": "#9d9d97",
+              "on-error-container": "#6e1400",
+              "on-secondary-container": "#42573c",
+              "surface-container": "#eeefe5",
+              "error-container": "#fd795a",
+              "on-surface-variant": "#5d6057",
+              "primary": "#4b6646",
+              "secondary-container": "#d0eac6",
+              "on-tertiary-fixed": "#4f4f46",
+              "on-tertiary-fixed-variant": "#6c6c62",
+              "on-primary-fixed": "#2c4528",
+              "primary-container": "#ccebc2",
+              "surface-container-high": "#e8e9df",
+              "on-tertiary": "#fbf9ec",
+              "primary-fixed": "#ccebc2",
+              "tertiary-fixed": "#fefdef",
+              "on-primary": "#eaffe1",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-fixed-dim": "#f0eee1"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Be Vietnam Pro"],
+              "label": ["Be Vietnam Pro"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hand-drawn-border {
+            border: 2px solid #5f6056;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+        }
+        .asymmetric-pill {
+            border-radius: 30px 10px 40px 15px;
+        }
+        body {
+            background-color: #fafaf3;
+            color: #30332c;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fafaf3]/80 dark:bg-stone-900/80 backdrop-blur-xl">
+<div class="flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#4b6646] dark:text-[#ccebc2]" data-icon="inventory_2">inventory_2</span>
+<h1 class="font-['Plus_Jakarta_Sans'] font-extrabold text-xl tracking-tight text-[#4b6646] dark:text-[#ccebc2]">MAD收纳</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[#4b6646]" data-icon="search">search</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6">
+<!-- Hero Section / Greeting -->
+<section class="mb-8">
+<p class="text-tertiary text-sm mb-1">下午好, 收纳大师</p>
+<h2 class="font-headline text-2xl font-bold tracking-tight text-on-surface">今天也要整洁如新。</h2>
+</section>
+<!-- Stats Grid (4-Square) -->
+<section class="grid grid-cols-2 gap-4 mb-10">
+<div class="bg-surface-container-low p-5 rounded-lg flex flex-col justify-between min-h-[140px] relative overflow-hidden">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="inventory">inventory</span>
+<div class="absolute -right-2 -top-2 opacity-10">
+<span class="material-symbols-outlined text-8xl" data-icon="inventory">inventory</span>
+</div>
+</div>
+<div>
+<p class="text-4xl font-headline font-bold text-on-surface">1,284</p>
+<p class="text-xs text-tertiary font-medium">总物品数</p>
+</div>
+<div class="absolute bottom-2 right-2 opacity-30">
+<svg class="fill-none stroke-tertiary stroke-[2]" height="40" viewbox="0 0 100 100" width="40">
+<path d="M20,40 Q50,35 80,40 M20,40 L20,80 Q50,85 80,80 L80,40"></path>
+</svg>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg flex flex-col justify-between min-h-[140px] relative">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-secondary text-3xl" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div>
+<p class="text-4xl font-headline font-bold text-on-surface">¥42.8k</p>
+<p class="text-xs text-tertiary font-medium">总价值</p>
+</div>
+<div class="absolute top-4 right-4 opacity-30">
+<svg class="fill-none stroke-tertiary stroke-[3]" height="30" viewbox="0 0 100 80" width="35">
+<path d="M10,20 Q50,15 90,20 L90,60 Q50,65 10,60 Z"></path>
+<circle cx="50" cy="40" r="10"></circle>
+</svg>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg flex flex-col justify-between min-h-[140px] relative">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary-dim text-3xl" data-icon="calendar_today">calendar_today</span>
+</div>
+<div>
+<div class="flex items-baseline gap-1">
+<p class="text-4xl font-headline font-bold text-on-surface">¥12</p>
+<span class="text-xs text-tertiary">/日</span>
+</div>
+<p class="text-xs text-tertiary font-medium">日均消耗</p>
+</div>
+<div class="absolute bottom-4 right-4 opacity-30">
+<svg class="fill-none stroke-tertiary stroke-[3]" height="35" viewbox="0 0 100 100" width="35">
+<rect height="55" rx="5" width="60" x="20" y="25"></rect>
+<line x1="35" x2="35" y1="20" y2="35"></line>
+<line x1="65" x2="65" y1="20" y2="35"></line>
+</svg>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded-lg flex flex-col justify-between min-h-[140px] relative">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="sell">sell</span>
+</div>
+<div>
+<p class="text-4xl font-headline font-bold text-on-surface">86</p>
+<p class="text-xs text-tertiary font-medium">闲置物品</p>
+</div>
+<div class="absolute top-8 right-4 opacity-30 rotate-12">
+<svg class="fill-none stroke-tertiary stroke-[3]" height="45" viewbox="0 0 80 120" width="30">
+<path d="M10,10 L70,10 L70,80 L40,110 L10,80 Z"></path>
+<circle cx="40" cy="30" r="5"></circle>
+</svg>
+</div>
+</div>
+</section>
+<!-- Quick Actions (2x2) -->
+<section class="mb-10">
+<h3 class="font-headline font-bold text-lg mb-4 flex items-center gap-2">
+                快捷操作
+                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+</h3>
+<div class="grid grid-cols-2 gap-3">
+<!-- Add Item - The Hero Button -->
+<button class="bg-primary hover:bg-primary-dim text-on-primary p-4 rounded-lg flex flex-col gap-2 items-start transition-all active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-2xl" data-icon="add_circle">add_circle</span>
+<span class="text-sm font-semibold">添加物品</span>
+</button>
+<button class="bg-surface-container p-4 rounded-lg flex flex-col gap-2 items-start hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-2xl" data-icon="location_on">location_on</span>
+<span class="text-sm font-medium">区域查看</span>
+</button>
+<button class="bg-surface-container p-4 rounded-lg flex flex-col gap-2 items-start hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-2xl" data-icon="label">label</span>
+<span class="text-sm font-medium">标签筛选</span>
+</button>
+<button class="bg-surface-container p-4 rounded-lg flex flex-col gap-2 items-start hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-2xl" data-icon="insights">insights</span>
+<span class="text-sm font-medium">统计分析</span>
+</button>
+</div>
+</section>
+<!-- Recently Organized (Horizontal Scroll) -->
+<section class="mb-6">
+<div class="flex justify-between items-end mb-4">
+<h3 class="font-headline font-bold text-lg">最近收纳</h3>
+<button class="text-primary text-xs font-semibold">查看全部</button>
+</div>
+<div class="flex overflow-x-auto pb-4 gap-4 no-scrollbar -mx-6 px-6">
+<!-- Card 1 -->
+<div class="min-w-[160px] bg-surface-container-lowest rounded-lg p-3 shadow-sm border border-outline-variant/10">
+<img class="w-full h-32 object-cover rounded-md mb-3" data-alt="Minimalist aesthetic photo of a single high-quality ceramic coffee cup on a plain wooden surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEHNs1rNDeyb2THgU1H3ryTUtFmzLKlbW8mff70NQM9hClmcMsVQUV94epL5mBkqClPV4Vs9A2IqT592VwMFguDuQ4U7J0j6l-G_eEtvDoMYJJsdYB43-km3_MaN7YPvn2HUM3uVpRq-G9VE_LUp3qv71Ld--soX-07SpYZeMhDPvViZXAlV1vT3enxI8H-RsVT_aOJUy1oGNl-Ns1JJbjdoZsQfhF-Xazo1d7NOLXV9ch5ZBo1IhGAyd4Bh672zg8PXFxS1Osezk"/>
+<h4 class="text-sm font-bold text-on-surface mb-1">手工咖啡杯</h4>
+<p class="text-[10px] text-tertiary">日均成本: ¥0.8</p>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[160px] bg-surface-container-lowest rounded-lg p-3 shadow-sm border border-outline-variant/10 relative">
+<div class="absolute -top-1 -right-1 z-10">
+<svg class="fill-tertiary-container stroke-tertiary stroke-1" height="24" viewbox="0 0 24 24" width="24">
+<path d="M3 3 L21 3 L18 12 L21 21 L3 21 Z"></path>
+</svg>
+</div>
+<img class="w-full h-32 object-cover rounded-md mb-3" data-alt="Designer leather wrist watch with olive green strap on a clean light gray background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfStoGeqHXfAHE9PN2oVi_D41NTwrz_zqoslZBXLZdbHmJKP2DkrrXu5ZB67Ty1r_y2ouwSr_XsNUNqh9W9KrPmA17xJG14sJ9klhC2JTLYidggEBiQ7j0t6vt674pmqY0oUrn_9rM5upMlMOFtw1hvlXLpfkvQsOIyC7gDl6GofJJhjUmtIEoDpdK_oOSiIlAfHpkIN4LvY7l9ZDzkTE3FAAG_ObYufjbx578o4WzXIqhb9rkyCnEWSULLI04HTMu18Kglj2LnbY"/>
+<h4 class="text-sm font-bold text-on-surface mb-1">机械腕表</h4>
+<p class="text-[10px] text-tertiary">日均成本: ¥4.2</p>
+</div>
+<!-- Card 3 -->
+<div class="min-w-[160px] bg-surface-container-lowest rounded-lg p-3 shadow-sm border border-outline-variant/10">
+<img class="w-full h-32 object-cover rounded-md mb-3" data-alt="Sleek silver portable bluetooth speaker on a light oak table with natural morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7rKWr4ivh8ByG38ufHdrO5x9nxc4zUyiHhUySnlAUOxXM5ESYvILwXp56vNK95ffQvFMgjNhQbyssj_LL7colcFK7YWN_4DOAX6PERO3TVOKu4zXd9vRY0MXZt8Y_o2WVmKR8kbJKKTc0OhkGqAM0k0PD_Qf8PRmSYHRhzSYMAQA8uGPTfj25i6bNvjeiYxAwkFij65W_u_aNqirDaR8ZO2_ph7WuH8v4ljtIdEVzzHBi44zlJ_vZmY1g_j0lORni7atw9JuC3ow"/>
+<h4 class="text-sm font-bold text-on-surface mb-1">蓝牙音箱</h4>
+<p class="text-[10px] text-tertiary">日均成本: ¥1.5</p>
+</div>
+</div>
+</section>
+<!-- Hand-drawn annotation placeholder -->
+<div class="mt-4 flex justify-center opacity-40">
+<svg class="fill-none stroke-tertiary stroke-[2] stroke-linecap-round" height="30" viewbox="0 0 200 50" width="120">
+<path d="M10,25 C50,10 150,40 190,25"></path>
+<path d="M180,15 L190,25 L180,35"></path>
+</svg>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-[2rem] bg-[#fafaf3]/80 dark:bg-stone-900/80 backdrop-blur-xl shadow-[0_-4px_20px_0_rgba(0,0,0,0.04)]">
+<div class="flex justify-around items-center px-4 pb-6 pt-3 w-full">
+<a class="flex flex-col items-center justify-center bg-[#ccebc2] dark:bg-[#4b6646]/30 text-[#4b6646] dark:text-[#ccebc2] rounded-full px-4 py-1 transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="home_app_logo" style="font-variation-settings: 'FILL' 1;">home_app_logo</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#5f6056] dark:text-stone-400 px-4 py-1 hover:text-[#4b6646] dark:hover:text-[#ccebc2] transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="Category">category</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">物品</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#5f6056] dark:text-stone-400 px-4 py-1 hover:text-[#4b6646] dark:hover:text-[#ccebc2] transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">区域</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#5f6056] dark:text-stone-400 px-4 py-1 hover:text-[#4b6646] dark:hover:text-[#ccebc2] transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">统计</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#5f6056] dark:text-stone-400 px-4 py-1 hover:text-[#4b6646] dark:hover:text-[#ccebc2] transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">设置</span>
+</a>
+</div>
+</nav>
+<!-- Style for hiding scrollbars -->
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

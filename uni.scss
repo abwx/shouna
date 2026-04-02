@@ -1,0 +1,71 @@
+/* 全局变量 */
+
+/* 颜色变量 - 基于设计稿 (home.txt) */
+$shouna-primary: #4b6646;        /* 深绿色 - 主色 */
+$shouna-primary-dim: #3f5a3a;    /* 暗绿色 - 主色变体 */
+$shouna-primary-container: #ccebc2; /* 浅绿色 - 主容器色 */
+$shouna-secondary: #4f6549;      /* 次级色 */
+$shouna-tertiary: #5f6056;       /* 灰绿色 - 辅助/文字色 */
+$shouna-background: #fafaf3;     /* 米白色 - 页面背景 */
+$shouna-on-surface: #30332c;     /* 深色 - 主要文字 */
+$shouna-on-surface-variant: #5d6057; /* 变体色 - 次要文字 */
+$shouna-on-primary-container: #3e5839; /* 深绿色 - 容器内文字 */
+$shouna-surface-container-low: #f4f4eb; /* 浅米色 - 卡片背景 */
+$shouna-surface-container: #eeefe5;     /* 中米色 - 输入框/按钮背景 */
+$shouna-surface-container-high: #e8e9df; /* 深米色 - 搜索框等背景 */
+$shouna-surface-container-highest: #e2e4d8; /* 最深米色 - 分割线等 */
+$shouna-surface-container-lowest: #ffffff; /* 纯白 */
+$shouna-surface-variant: #e2e4d8; /* 变体色 - 描边/背景 */
+
+/* 页面统一边距 */
+$shouna-page-padding: 48rpx;
+
+/* 兼容 uni-app 默认变量 */
+$uni-primary: $shouna-primary;
+$uni-text-color: $shouna-on-surface;
+$uni-bg-color: $shouna-background;
+$uni-bg-color-grey: $shouna-surface-container-low;
+
+/* 文字尺寸 */
+$uni-font-size-sm: 12px;
+$uni-font-size-base: 14px;
+$uni-font-size-lg: 16px;
+$font-size-xl: 20px;
+$font-size-2xl: 24px;
+$font-size-4xl: 36px;
+
+/* 圆角 */
+$uni-border-radius-base: 16px;
+$uni-border-radius-lg: 32px;
+
+/* 图片尺寸 */
+$uni-img-size-sm:20px;
+$uni-img-size-base:26px;
+$uni-img-size-lg:40px;
+
+/* Border Radius */
+$uni-border-radius-sm: 2px;
+$uni-border-radius-base: 3px;
+$uni-border-radius-lg: 6px;
+$uni-border-radius-circle: 50%;
+
+/* 水平间距 */
+$uni-spacing-row-sm: 5px;
+$uni-spacing-row-base: 10px;
+$uni-spacing-row-lg: 15px;
+
+/* 垂直间距 */
+$uni-spacing-col-sm: 4px;
+$uni-spacing-col-base: 8px;
+$uni-spacing-col-lg: 12px;
+
+/* 透明度 */
+$uni-opacity-disabled: 0.3; // 组件禁用态的透明度
+
+/* 文章场景相关 */
+$uni-color-title: #2C405A; // 文章标题颜色
+$uni-font-size-title:20px;
+$uni-color-subtitle: #555555; // 二级标题颜色
+$uni-font-size-subtitle:18px;
+$uni-color-paragraph: #3F536E; // 文章正文颜色
+$uni-font-size-paragraph:15px;

@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/items/items",
+    "pages/detail/detail",
+    "pages/add/add",
+    "pages/area/area",
+    "pages/statistics/statistics",
+    "pages/setting/setting"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "收纳管家",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#5f6056",
+    "selectedColor": "#4b6646",
+    "backgroundColor": "#fafaf3",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/items/items",
+        "text": "物品"
+      },
+      {
+        "pagePath": "pages/area/area",
+        "text": "区域"
+      },
+      {
+        "pagePath": "pages/statistics/statistics",
+        "text": "统计"
+      },
+      {
+        "pagePath": "pages/setting/setting",
+        "text": "设置"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

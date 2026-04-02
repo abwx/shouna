@@ -1,0 +1,407 @@
+/* 全局变量 */
+/* 颜色变量 - 基于设计稿 (home.txt) */
+/* 深绿色 - 主色 */
+/* 暗绿色 - 主色变体 */
+/* 浅绿色 - 主容器色 */
+/* 次级色 */
+/* 灰绿色 - 辅助/文字色 */
+/* 米白色 - 页面背景 */
+/* 深色 - 主要文字 */
+/* 变体色 - 次要文字 */
+/* 深绿色 - 容器内文字 */
+/* 浅米色 - 卡片背景 */
+/* 中米色 - 输入框/按钮背景 */
+/* 深米色 - 搜索框等背景 */
+/* 最深米色 - 分割线等 */
+/* 纯白 */
+/* 变体色 - 描边/背景 */
+/* 页面统一边距 */
+/* 兼容 uni-app 默认变量 */
+/* 文字尺寸 */
+/* 圆角 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.container.data-v-fc23ec97 {
+  min-height: 100vh;
+  background-color: #fafaf3;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+.nav-bar.data-v-fc23ec97 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 88rpx;
+  padding: 0 48rpx;
+  padding-top: var(--status-bar-height);
+  background-color: rgba(250, 250, 243, 0.8);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+.nav-bar .nav-left.data-v-fc23ec97 {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+.nav-bar .nav-left .nav-title.data-v-fc23ec97 {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #4b6646;
+  letter-spacing: -1rpx;
+}
+.main-content.data-v-fc23ec97 {
+  flex: 1;
+  padding-top: calc(120rpx + var(--status-bar-height));
+}
+.content-wrapper.data-v-fc23ec97 {
+  padding: 0 48rpx;
+}
+.page-header.data-v-fc23ec97 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48rpx;
+}
+.page-header .page-title.data-v-fc23ec97 {
+  font-size: 60rpx;
+  font-weight: 800;
+  color: #30332c;
+}
+.page-header .time-selector.data-v-fc23ec97 {
+  background-color: #f4f4eb;
+  padding: 8rpx;
+  border-radius: 100rpx;
+  display: flex;
+  gap: 8rpx;
+}
+.page-header .time-selector .time-item.data-v-fc23ec97 {
+  padding: 12rpx 32rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #5d6057;
+  border-radius: 100rpx;
+  transition: all 0.3s;
+}
+.page-header .time-selector .time-item.active.data-v-fc23ec97 {
+  background-color: #ccebc2;
+  color: #3e5839;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+.overview-section.data-v-fc23ec97 {
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+  margin-bottom: 64rpx;
+}
+.overview-section .card-total.data-v-fc23ec97 {
+  background-color: rgba(204, 235, 194, 0.4);
+  padding: 48rpx;
+  border-radius: 32rpx;
+  position: relative;
+  overflow: hidden;
+}
+.overview-section .card-total .total-info.data-v-fc23ec97 {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+.overview-section .card-total .total-info .label.data-v-fc23ec97 {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: rgba(62, 88, 57, 0.8);
+  margin-bottom: 8rpx;
+}
+.overview-section .card-total .total-info .amount.data-v-fc23ec97 {
+  font-size: 72rpx;
+  font-weight: 800;
+  color: #3e5839;
+}
+.overview-section .card-total .total-info .trend.data-v-fc23ec97 {
+  margin-top: 32rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+.overview-section .card-total .total-info .trend .trend-text.data-v-fc23ec97 {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #4b6646;
+}
+.overview-section .card-total .bg-svg.data-v-fc23ec97 {
+  position: absolute;
+  right: -32rpx;
+  bottom: -32rpx;
+  width: 256rpx;
+  height: 256rpx;
+}
+.overview-section .overview-grid.data-v-fc23ec97 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32rpx;
+}
+.overview-section .overview-grid .card-small.data-v-fc23ec97 {
+  background-color: #f4f4eb;
+  padding: 40rpx;
+  border-radius: 32rpx;
+  display: flex;
+  flex-direction: column;
+}
+.overview-section .overview-grid .card-small .label.data-v-fc23ec97 {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #5f6056;
+  margin-bottom: 8rpx;
+}
+.overview-section .overview-grid .card-small .value.data-v-fc23ec97 {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #30332c;
+}
+.charts-section.data-v-fc23ec97 {
+  display: flex;
+  flex-direction: column;
+  gap: 48rpx;
+  margin-bottom: 64rpx;
+}
+.charts-section .chart-card.data-v-fc23ec97 {
+  background-color: #ffffff;
+  padding: 48rpx;
+  border-radius: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.02);
+}
+.charts-section .chart-card .chart-header.data-v-fc23ec97 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48rpx;
+}
+.charts-section .chart-card .chart-header .chart-title.data-v-fc23ec97 {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #30332c;
+}
+.charts-section .chart-card .chart-header .chart-subtitle.data-v-fc23ec97 {
+  font-size: 24rpx;
+  color: #5f6056;
+  font-style: italic;
+}
+.charts-section .chart-card .line-chart-box.data-v-fc23ec97 {
+  height: 200rpx;
+  margin-bottom: 32rpx;
+}
+.charts-section .chart-card .line-chart-box .line-chart-svg.data-v-fc23ec97 {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.charts-section .chart-card .chart-labels.data-v-fc23ec97 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20rpx;
+  color: #5f6056;
+  font-weight: 500;
+}
+.charts-section .donut-card.data-v-fc23ec97 {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 48rpx;
+  align-items: center;
+}
+.charts-section .donut-card .donut-box.data-v-fc23ec97 {
+  position: relative;
+  aspect-ratio: 1;
+}
+.charts-section .donut-card .donut-box .donut-svg.data-v-fc23ec97 {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.charts-section .donut-card .donut-box .donut-center.data-v-fc23ec97 {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.charts-section .donut-card .donut-box .donut-center .center-label.data-v-fc23ec97 {
+  font-size: 20rpx;
+  color: #5f6056;
+}
+.charts-section .donut-card .donut-box .donut-center .center-value.data-v-fc23ec97 {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #30332c;
+}
+.charts-section .donut-card .legend-box.data-v-fc23ec97 {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+.charts-section .donut-card .legend-box .legend-item.data-v-fc23ec97 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.charts-section .donut-card .legend-box .legend-item .legend-left.data-v-fc23ec97 {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+.charts-section .donut-card .legend-box .legend-item .legend-left .dot.data-v-fc23ec97 {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+}
+.charts-section .donut-card .legend-box .legend-item .legend-left .legend-name.data-v-fc23ec97 {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #30332c;
+}
+.charts-section .donut-card .legend-box .legend-item .legend-percent.data-v-fc23ec97 {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #30332c;
+}
+.rankings-section.data-v-fc23ec97 {
+  display: flex;
+  flex-direction: column;
+  gap: 64rpx;
+  margin-bottom: 120rpx;
+}
+.rankings-section .ranking-group .section-header.data-v-fc23ec97 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+.rankings-section .ranking-group .section-header .section-title.data-v-fc23ec97 {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #30332c;
+}
+.rankings-section .ranking-group .section-header .header-tip.data-v-fc23ec97 {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 24rpx;
+  color: #5f6056;
+}
+.rankings-section .ranking-group .item-list.data-v-fc23ec97 {
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+}
+.rankings-section .ranking-group .item-list .rank-item.data-v-fc23ec97 {
+  display: flex;
+  align-items: center;
+  gap: 32rpx;
+}
+.rankings-section .ranking-group .item-list .rank-item .item-img.data-v-fc23ec97 {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 24rpx;
+  background-color: #e8e9df;
+}
+.rankings-section .ranking-group .item-list .rank-item .item-info.data-v-fc23ec97 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.rankings-section .ranking-group .item-list .rank-item .item-info .item-name.data-v-fc23ec97 {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #30332c;
+}
+.rankings-section .ranking-group .item-list .rank-item .item-info .item-date.data-v-fc23ec97 {
+  font-size: 20rpx;
+  color: #5f6056;
+}
+.rankings-section .ranking-group .item-list .rank-item .item-price.data-v-fc23ec97 {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #30332c;
+}
+.rankings-section .ranking-group .cost-performance-list.data-v-fc23ec97 {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+.rankings-section .ranking-group .cost-performance-list .cp-item.data-v-fc23ec97 {
+  background-color: #eeefe5;
+  padding: 32rpx;
+  border-radius: 24rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 8rpx solid transparent;
+}
+.rankings-section .ranking-group .cost-performance-list .cp-item .cp-left.data-v-fc23ec97 {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+.rankings-section .ranking-group .cost-performance-list .cp-item .cp-left .cp-icon-box.data-v-fc23ec97 {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rankings-section .ranking-group .cost-performance-list .cp-item .cp-left .cp-info.data-v-fc23ec97 {
+  display: flex;
+  flex-direction: column;
+}
+.rankings-section .ranking-group .cost-performance-list .cp-item .cp-left .cp-info .cp-name.data-v-fc23ec97 {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #30332c;
+}
+.rankings-section .ranking-group .cost-performance-list .cp-item .cp-left .cp-info .cp-count.data-v-fc23ec97 {
+  font-size: 20rpx;
+  color: #5f6056;
+}
+.rankings-section .ranking-group .cost-performance-list .cp-item .cp-right.data-v-fc23ec97 {
+  text-align: right;
+}
+.rankings-section .ranking-group .cost-performance-list .cp-item .cp-right .cp-value.data-v-fc23ec97 {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #4b6646;
+}
+.rankings-section .ranking-group .cost-performance-list .cp-item .cp-right .cp-unit.data-v-fc23ec97 {
+  font-size: 20rpx;
+  color: #5f6056;
+  display: block;
+}
+.empty-list.data-v-fc23ec97 {
+  padding: 40rpx 0;
+  text-align: center;
+  color: #5f6056;
+  font-size: 24rpx;
+}
+.safe-area-bottom.data-v-fc23ec97 {
+  height: 200rpx;
+}
+@keyframes dash-fc23ec97 {
+to {
+    stroke-dashoffset: 0;
+}
+}
+.hand-drawn-path.data-v-fc23ec97 {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: dash-fc23ec97 3s linear forwards;
+}

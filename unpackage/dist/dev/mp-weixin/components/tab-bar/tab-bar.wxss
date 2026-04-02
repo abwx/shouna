@@ -1,0 +1,76 @@
+/* 全局变量 */
+/* 颜色变量 - 基于设计稿 (home.txt) */
+/* 深绿色 - 主色 */
+/* 暗绿色 - 主色变体 */
+/* 浅绿色 - 主容器色 */
+/* 次级色 */
+/* 灰绿色 - 辅助/文字色 */
+/* 米白色 - 页面背景 */
+/* 深色 - 主要文字 */
+/* 变体色 - 次要文字 */
+/* 深绿色 - 容器内文字 */
+/* 浅米色 - 卡片背景 */
+/* 中米色 - 输入框/按钮背景 */
+/* 深米色 - 搜索框等背景 */
+/* 最深米色 - 分割线等 */
+/* 纯白 */
+/* 变体色 - 描边/背景 */
+/* 页面统一边距 */
+/* 兼容 uni-app 默认变量 */
+/* 文字尺寸 */
+/* 圆角 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+  background-color: rgba(250, 250, 243, 0.85);
+  -webkit-backdrop-filter: blur(15px);
+          backdrop-filter: blur(15px);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top-left-radius: 40rpx;
+  border-top-right-radius: 40rpx;
+  box-shadow: 0 -4rpx 40rpx rgba(0, 0, 0, 0.04);
+  z-index: 100;
+}
+.tab-bar .tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8rpx 0;
+  width: 120rpx;
+  transition: all 0.3s ease;
+}
+.tab-bar .tab-item .icon-wrapper {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  margin-bottom: 4rpx;
+}
+.tab-bar .tab-item .tab-label {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: #5f6056;
+}
+.tab-bar .tab-item.active .icon-wrapper {
+  background-color: #ccebc2;
+}
+.tab-bar .tab-item.active .tab-label {
+  color: #4b6646;
+  font-weight: bold;
+}

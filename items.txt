@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Be_Vietnam_Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#5f6056",
+              "surface-variant": "#e2e4d8",
+              "surface-dim": "#d9dbd0",
+              "secondary-fixed-dim": "#c2dcb9",
+              "on-primary-container": "#3e5839",
+              "on-surface": "#30332c",
+              "on-secondary-fixed": "#30452b",
+              "surface-container-low": "#f4f4eb",
+              "error": "#a73b21",
+              "surface-tint": "#4b6646",
+              "inverse-surface": "#0d0f0b",
+              "surface-container-highest": "#e2e4d8",
+              "background": "#fafaf3",
+              "surface-bright": "#fafaf3",
+              "secondary-dim": "#43593e",
+              "on-tertiary-container": "#616157",
+              "error-dim": "#791903",
+              "primary-dim": "#3f5a3a",
+              "tertiary-container": "#fefdef",
+              "tertiary-dim": "#53544a",
+              "surface": "#fafaf3",
+              "inverse-primary": "#ddfdd2",
+              "on-primary-fixed-variant": "#486242",
+              "outline": "#797c72",
+              "on-secondary": "#ebffe1",
+              "on-error": "#fff7f6",
+              "on-secondary-fixed-variant": "#4b6146",
+              "secondary-fixed": "#d0eac6",
+              "primary-fixed-dim": "#beddb5",
+              "outline-variant": "#b1b3a8",
+              "secondary": "#4f6549",
+              "on-background": "#30332c",
+              "inverse-on-surface": "#9d9d97",
+              "on-error-container": "#6e1400",
+              "on-secondary-container": "#42573c",
+              "surface-container": "#eeefe5",
+              "error-container": "#fd795a",
+              "on-surface-variant": "#5d6057",
+              "primary": "#4b6646",
+              "secondary-container": "#d0eac6",
+              "on-tertiary-fixed": "#4f4f46",
+              "on-tertiary-fixed-variant": "#6c6c62",
+              "on-primary-fixed": "#2c4528",
+              "primary-container": "#ccebc2",
+              "surface-container-high": "#e8e9df",
+              "on-tertiary": "#fbf9ec",
+              "primary-fixed": "#ccebc2",
+              "tertiary-fixed": "#fefdef",
+              "on-primary": "#eaffe1",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-fixed-dim": "#f0eee1"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Be Vietnam Pro"],
+              "label": ["Be Vietnam Pro"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body min-h-screen pb-32">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-[#fafaf3]/80 backdrop-blur-xl flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#4b6646]" data-icon="inventory_2">inventory_2</span>
+<h1 class="font-['Plus_Jakarta_Sans'] font-extrabold text-xl text-[#4b6646] tracking-tight">MAD收纳</h1>
+</div>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[#4b6646]" data-icon="search">search</span>
+</button>
+</header>
+<main class="pt-20 px-6">
+<!-- Page Title & Filter -->
+<section class="flex justify-between items-end mb-6">
+<div>
+<p class="text-on-surface-variant text-sm font-medium mb-1">Your Inventory</p>
+<h2 class="font-headline font-bold text-3xl tracking-tight text-on-surface">全部物品</h2>
+</div>
+<button class="w-12 h-12 flex items-center justify-center bg-surface-container rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+</section>
+<!-- Search Bar -->
+<section class="mb-6">
+<div class="relative flex items-center">
+<span class="absolute left-4 material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-high border-none rounded-xl focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline/60" placeholder="搜索我的物品..." type="text"/>
+</div>
+</section>
+<!-- Horizontal Scroll Tabs -->
+<nav class="flex gap-3 overflow-x-auto no-scrollbar mb-8 -mx-6 px-6">
+<button class="whitespace-nowrap px-6 py-2 rounded-full bg-primary text-on-primary font-medium text-sm transition-all shadow-sm">全部</button>
+<button class="whitespace-nowrap px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-all">常用</button>
+<button class="whitespace-nowrap px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-all">闲置</button>
+<button class="whitespace-nowrap px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-all">耗材</button>
+<button class="whitespace-nowrap px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-all">贵重</button>
+</nav>
+<!-- Items Grid -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Item Card 1 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden flex flex-col group cursor-pointer">
+<div class="aspect-square relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern minimalist mechanical watch on a clean neutral background with soft natural lighting and warm tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7qN_v11Ykmc_FsW_jC5R2g3cmDICWQ1iXjjt55e2DUxQ_oByo8VNhikWF0cf2NawrVI0BhPmyUsZIsf9ELSsVUemSbogpLcKPGz89-oO7OpIPlInfkpyf4_l5X2gGbXY745jWzl5fdNgwGZznY4z5cnv6G9-ZcBBbL6UofeDfAxxjc-MSCn0HANpwLXpeNvJ-WDu7W4NjTm9qN_sG744YtbujBY6ybsPDdePehkFgpAjHduknyNrotn1Bbf0Itmk6CEcVpK_62rk"/>
+<div class="absolute top-2 right-2 bg-white/60 backdrop-blur-md p-1.5 rounded-full">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="p-3">
+<h3 class="font-headline font-bold text-on-surface text-sm truncate mb-1">精工机械男表</h3>
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px] mb-2">
+<span class="material-symbols-outlined text-[12px]" data-icon="location_on">location_on</span>
+<span>卧室 · 床头柜</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-outline">日均成本</span>
+<span class="text-xs font-bold text-primary">¥2.45</span>
+</div>
+</div>
+</div>
+<!-- Item Card 2 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden flex flex-col group cursor-pointer">
+<div class="aspect-square relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A minimal white designer water bottle on a warm beige background with artistic shadows and clean aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEIFYEL4LiAYDHeAOAs8-HZxKkdLnFk3cg3zk-sHeidV6MY-ilnfIX9dGF3WPZ9Q3Gk29SGZpu5YcIFkJmCEnFMpQ1yxyGu271ZnrIXoN5_CGG_x4K6Cnbf0VY1j3kbh-QNkm6JuVpXOykj0TywNTSsfgBtpMj_byXKMwxPCtKKZq_ZvJcVCK6gDL2WjxqgN_d-ji_b58iQo0_YxJAJVb9UkKVCebtUT7RL-mdoPcm0ZZN4wWHHWlMF0fKaNxXX0X8CVyqFJOoqgA"/>
+</div>
+<div class="p-3">
+<h3 class="font-headline font-bold text-on-surface text-sm truncate mb-1">保温杯 · 象印</h3>
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px] mb-2">
+<span class="material-symbols-outlined text-[12px]" data-icon="location_on">location_on</span>
+<span>厨房 · 收纳架</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-outline">日均成本</span>
+<span class="text-xs font-bold text-primary">¥0.82</span>
+</div>
+</div>
+</div>
+<!-- Item Card 3 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden flex flex-col group cursor-pointer">
+<div class="aspect-square relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Pair of minimalist white sneakers on a simple wooden floor with soft morning light through a window" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDsh654PqsLUmlialJITgk7bt3TNDCRZ5JX5gHq29pDsPSyQ7UeWpGeAaM62ukmM_bTSEe6_s1opiU5PkCqxB68HCg7p6ojhedsPsi5iH27aVbSMJO-aU6k_putq70bZZklD41TBWXsFB-LPB4hDtFFXodtV7e5HCqdpvarZd0mKTDmtnkDD2-IKWMzoHbwa-C7mgdlBqKJWzHrjw6UBkOzKFLICrEateNGP7-AUvT8pv7KWew8Tsb3QTe_ICBGukm9wvMsB3ZVng"/>
+</div>
+<div class="p-3">
+<h3 class="font-headline font-bold text-on-surface text-sm truncate mb-1">运动跑鞋</h3>
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px] mb-2">
+<span class="material-symbols-outlined text-[12px]" data-icon="location_on">location_on</span>
+<span>玄关 · 鞋架</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-outline">日均成本</span>
+<span class="text-xs font-bold text-primary">¥1.12</span>
+</div>
+</div>
+</div>
+<!-- Item Card 4 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden flex flex-col group cursor-pointer">
+<div class="aspect-square relative overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Professional studio headphones on a dark oak desk with subtle warm ambient lighting and soft bokeh background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAznRSee5Xy3kGyBOE0reiCpwjcQXZRwm72ahgSihzjqV1B_RAxeFRmLq2zQF81jx1sRLErONl2-lnFSREENXKYrIg-KIh-fo-k3ZfUCXLXsk_1TJnnmgLjaYB4PYhWD5Vq-3SryW-f-idYOGf9qe3zRuJ0JA7fj-y3WwbJfVX32sQv_0VaZzAjxjh4umzirpMGucafRCatOsxCp3K9jLElCWRH5ZXpMdfCM7y0cH2qi3ILN77xonLXkvi8KPXIIJG9i_x0srjvcQ"/>
+</div>
+<div class="p-3">
+<h3 class="font-headline font-bold text-on-surface text-sm truncate mb-1">HIFI耳机</h3>
+<div class="flex items-center gap-1 text-on-surface-variant text-[10px] mb-2">
+<span class="material-symbols-outlined text-[12px]" data-icon="location_on">location_on</span>
+<span>书房 · 电脑桌</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-outline">日均成本</span>
+<span class="text-xs font-bold text-primary">¥5.30</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Hand-drawn flourish decorative element (Visual Signature) -->
+<div class="mt-12 flex justify-center opacity-20 rotate-3">
+<span class="material-symbols-outlined text-4xl text-tertiary" data-icon="draw">draw</span>
+</div>
+</main>
+<!-- FAB: Floating Action Button -->
+<button class="fixed right-6 bottom-32 w-16 h-16 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center z-50 hover:scale-105 active:scale-90 transition-transform duration-300">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-[2rem] bg-[#fafaf3]/80 backdrop-blur-xl shadow-[0_-4px_20px_0_rgba(0,0,0,0.04)] flex justify-around items-center px-4 pb-6 pt-3 w-full">
+<button class="flex flex-col items-center justify-center text-[#5f6056] px-4 py-1 hover:text-[#4b6646] transition-colors active:scale-90 duration-300 ease-out">
+<span class="material-symbols-outlined mb-1" data-icon="home_app_logo">home_app_logo</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">首页</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-[#ccebc2] text-[#4b6646] rounded-full px-4 py-1 active:scale-90 duration-300 ease-out">
+<span class="material-symbols-outlined mb-1" data-icon="Category" style="font-variation-settings: 'FILL' 1;">category</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">物品</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#5f6056] px-4 py-1 hover:text-[#4b6646] transition-colors active:scale-90 duration-300 ease-out">
+<span class="material-symbols-outlined mb-1" data-icon="layers">layers</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">区域</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#5f6056] px-4 py-1 hover:text-[#4b6646] transition-colors active:scale-90 duration-300 ease-out">
+<span class="material-symbols-outlined mb-1" data-icon="leaderboard">leaderboard</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">统计</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#5f6056] px-4 py-1 hover:text-[#4b6646] transition-colors active:scale-90 duration-300 ease-out">
+<span class="material-symbols-outlined mb-1" data-icon="settings">settings</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] font-medium tracking-wide">设置</span>
+</button>
+</nav>
+</body></html>

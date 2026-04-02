@@ -1,0 +1,84 @@
+{
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "我的收纳"
+			}
+		},
+		{
+			"path": "pages/items/items",
+			"style": {
+				"navigationBarTitleText": "全部物品"
+			}
+		},
+		{
+			"path": "pages/detail/detail",
+			"style": {
+				"navigationBarTitleText": "物品详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/add/add",
+			"style": {
+				"navigationBarTitleText": "添加物品",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/area/area",
+			"style": {
+				"navigationBarTitleText": "我的区域"
+			}
+		},
+		{
+			"path": "pages/statistics/statistics",
+			"style": {
+				"navigationBarTitleText": "消费统计",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/setting/setting",
+			"style": {
+				"navigationBarTitleText": "设置",
+				"navigationStyle": "custom"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "收纳管家",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {},
+	"tabBar": {
+		"color": "#5f6056",
+		"selectedColor": "#4b6646",
+		"backgroundColor": "#fafaf3",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/items/items",
+				"text": "物品"
+			},
+			{
+				"pagePath": "pages/area/area",
+				"text": "区域"
+			},
+			{
+				"pagePath": "pages/statistics/statistics",
+				"text": "统计"
+			},
+			{
+				"pagePath": "pages/setting/setting",
+				"text": "设置"
+			}
+		]
+	}
+}
