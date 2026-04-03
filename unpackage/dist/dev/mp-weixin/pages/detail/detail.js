@@ -83,8 +83,13 @@ const _sfc_main = {
         }
       });
     };
+    const handleToggleFavorite = () => {
+      itemStore.toggleFavorite(itemId.value);
+    };
     const handleEdit = () => {
-      common_vendor.index.showToast({ title: "编辑功能开发中", icon: "none" });
+      common_vendor.index.navigateTo({
+        url: `/pages/add/add?id=${itemId.value}`
+      });
     };
     return (_ctx, _cache) => {
       return common_vendor.e({
@@ -95,101 +100,110 @@ const _sfc_main = {
           size: "24",
           color: "#4b6646"
         }),
-        c: common_vendor.o(goBack, "1a"),
-        d: common_vendor.p({
+        c: common_vendor.o(goBack, "f7"),
+        d: common_vendor.o(handleToggleFavorite, "70"),
+        e: common_vendor.p({
+          type: item.value.favorite ? "heart-filled" : "heart",
+          size: "26",
+          color: item.value.favorite ? "#a73b21" : "#4b6646"
+        }),
+        f: common_vendor.p({
           type: "share",
           size: "24",
           color: "#4b6646"
         }),
-        e: common_vendor.p({
+        g: common_vendor.p({
           type: "more-filled",
           size: "24",
           color: "#4b6646"
         }),
-        f: item.value.image,
-        g: item.value.favorite
+        h: item.value.image,
+        i: item.value.favorite
       }, item.value.favorite ? {
-        h: common_vendor.p({
+        j: common_vendor.p({
           type: "heart-filled",
           size: "14",
           color: "#4b6646"
         })
       } : {}, {
-        i: common_vendor.t(item.value.tags[0] || "默认分类"),
-        j: common_vendor.t(item.value.name),
-        k: common_vendor.t(item.value.price || "0.00"),
-        l: common_vendor.p({
+        k: common_vendor.t(item.value.tags[0] || "默认分类"),
+        l: common_vendor.t(item.value.name),
+        m: common_vendor.t(item.value.price || "0.00"),
+        n: common_vendor.p({
           type: "calendar",
           size: "20",
           color: "#4b6646"
         }),
-        m: common_vendor.t(item.value.buyDate || "未知"),
-        n: common_vendor.p({
+        o: common_vendor.t(item.value.buyDate || "未知"),
+        p: common_vendor.p({
           type: "location-filled",
           size: "20",
           color: "#4b6646"
         }),
-        o: common_vendor.t(item.value.area),
-        p: item.value.productionDate && item.value.shelfLife
-      }, item.value.productionDate && item.value.shelfLife ? common_vendor.e({
-        q: common_vendor.t(expiryInfo.value.label),
-        r: expiryInfo.value.color,
-        s: common_vendor.t(item.value.productionDate),
-        t: common_vendor.t(expiryDateStr.value),
-        v: expiryProgress.value + "%",
-        w: expiryInfo.value.color,
-        x: expiryInfo.value.daysLeft >= 0
-      }, expiryInfo.value.daysLeft >= 0 ? {
-        y: common_vendor.t(expiryInfo.value.daysLeft)
-      } : {
-        z: common_vendor.t(Math.abs(expiryInfo.value.daysLeft))
-      }) : {}, {
-        A: common_vendor.f(item.value.tags, (tag, index, i0) => {
+        q: common_vendor.t(item.value.area),
+        r: item.value.tags && item.value.tags.length > 0
+      }, item.value.tags && item.value.tags.length > 0 ? {
+        s: common_vendor.f(item.value.tags, (tag, index, i0) => {
           return {
-            a: "830a28e2-6-" + i0,
+            a: "815d6bdc-7-" + i0,
             b: common_vendor.t(tag),
             c: index
           };
         }),
-        B: common_vendor.p({
+        t: common_vendor.p({
           type: "paperplane",
           size: "12",
           color: "#5d6057"
-        }),
-        C: common_vendor.p({
+        })
+      } : {}, {
+        v: item.value.productionDate && item.value.shelfLife
+      }, item.value.productionDate && item.value.shelfLife ? common_vendor.e({
+        w: common_vendor.t(expiryInfo.value.label),
+        x: expiryInfo.value.color,
+        y: common_vendor.t(item.value.productionDate),
+        z: common_vendor.t(expiryDateStr.value),
+        A: expiryProgress.value + "%",
+        B: expiryInfo.value.color,
+        C: expiryInfo.value.daysLeft >= 0
+      }, expiryInfo.value.daysLeft >= 0 ? {
+        D: common_vendor.t(expiryInfo.value.daysLeft)
+      } : {
+        E: common_vendor.t(Math.abs(expiryInfo.value.daysLeft))
+      }) : {}, {
+        F: common_vendor.p({
           type: "info",
           size: "20",
           color: "rgba(75, 102, 70, 0.4)"
         }),
-        D: common_vendor.t(item.value.cost.replace("¥", "")),
-        E: common_vendor.t(item.value.estimatedDays),
-        F: common_vendor.t(usedDays.value),
-        G: progress.value + "%",
-        H: common_vendor.t(Math.max(0, item.value.estimatedDays - usedDays.value)),
-        I: common_vendor.t(progress.value),
-        J: item.value.remark
+        G: common_vendor.t((item.value.cost || "¥0.00").replace("¥", "")),
+        H: common_vendor.t(item.value.estimatedDays),
+        I: common_vendor.t(usedDays.value),
+        J: progress.value + "%",
+        K: common_vendor.t(Math.max(0, item.value.estimatedDays - usedDays.value)),
+        L: common_vendor.t(progress.value),
+        M: item.value.remark
       }, item.value.remark ? {
-        K: common_vendor.t(item.value.remark)
+        N: common_vendor.t(item.value.remark)
       } : {}, {
-        L: common_vendor.p({
+        O: common_vendor.p({
           type: "trash",
           size: "20",
           color: "#a73b21"
         }),
-        M: common_vendor.o(handleDelete, "a3"),
-        N: common_vendor.p({
+        P: common_vendor.o(handleDelete, "a2"),
+        Q: common_vendor.p({
           type: "compose",
           size: "20",
           color: "#ffffff"
         }),
-        O: common_vendor.o(handleEdit, "de")
+        R: common_vendor.o(handleEdit, "69")
       }) : {
-        P: common_vendor.p({
+        S: common_vendor.p({
           type: "info",
           size: "64",
           color: "#eeefe5"
         }),
-        Q: common_vendor.o(goBack, "27")
+        T: common_vendor.o(goBack, "92")
       });
     };
   }

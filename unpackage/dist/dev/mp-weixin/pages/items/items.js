@@ -17,6 +17,7 @@ const _sfc_main = {
     const activeCategory = common_vendor.ref(0);
     const searchKeyword = common_vendor.ref("");
     const filterArea = common_vendor.ref("");
+    const filterFavorite = common_vendor.ref(false);
     const getExpiryStatus = (item) => {
       if (!item.productionDate || !item.shelfLife)
         return null;
@@ -32,6 +33,16 @@ const _sfc_main = {
     };
     common_vendor.onShow(() => {
       common_vendor.index.hideTabBar();
+      if (itemStore.filterFavorite) {
+        filterFavorite.value = true;
+        activeCategory.value = 0;
+        itemStore.setFilterFavorite(false);
+      }
+      if (itemStore.filterArea) {
+        filterArea.value = itemStore.filterArea;
+        activeCategory.value = 0;
+        itemStore.setFilterArea("");
+      }
       if (itemStore.searchFocus) {
         itemStore.setSearchFocus(false);
       }
@@ -44,11 +55,18 @@ const _sfc_main = {
       if (options.tag) {
         searchKeyword.value = options.tag;
       }
+      if (options.favorite === "true") {
+        filterFavorite.value = true;
+        activeCategory.value = 0;
+      }
     });
     const filteredItems = common_vendor.computed(() => {
       let list = itemStore.items;
       if (filterArea.value) {
         list = list.filter((item) => item.area === filterArea.value);
+      }
+      if (filterFavorite.value) {
+        list = list.filter((item) => item.favorite);
       }
       const category = itemStore.categories[activeCategory.value];
       if (category !== "全部") {
@@ -65,6 +83,7 @@ const _sfc_main = {
     const clearFilter = () => {
       filterArea.value = "";
       searchKeyword.value = "";
+      filterFavorite.value = false;
       activeCategory.value = 0;
     };
     const goToAdd = () => {
@@ -85,43 +104,50 @@ const _sfc_main = {
           color: "#4b6646"
         }),
         b: common_vendor.p({
-          type: "search",
-          size: "24",
-          color: "#4b6646"
-        }),
-        c: common_vendor.p({
           type: "tune",
           size: "28",
           color: "#5d6057"
         }),
-        d: common_vendor.p({
+        c: common_vendor.p({
           type: "search",
           size: "20",
           color: "#797c72"
         }),
-        e: searchKeyword.value,
-        f: common_vendor.o(($event) => searchKeyword.value = $event.detail.value, "a7"),
-        g: searchKeyword.value
+        d: searchKeyword.value,
+        e: common_vendor.o(($event) => searchKeyword.value = $event.detail.value, "43"),
+        f: searchKeyword.value
       }, searchKeyword.value ? {
-        h: common_vendor.o(($event) => searchKeyword.value = "", "29"),
-        i: common_vendor.p({
+        g: common_vendor.o(($event) => searchKeyword.value = "", "e6"),
+        h: common_vendor.p({
           type: "close-filled",
           size: "20",
           color: "#797c72"
         })
       } : {}, {
+        i: filterArea.value || filterFavorite.value
+      }, filterArea.value || filterFavorite.value ? common_vendor.e({
         j: filterArea.value
       }, filterArea.value ? {
         k: common_vendor.t(filterArea.value),
-        l: common_vendor.o(($event) => filterArea.value = "", "7e"),
+        l: common_vendor.o(($event) => filterArea.value = "", "53"),
         m: common_vendor.p({
           type: "close",
           size: "14",
           color: "#4b6646"
-        }),
-        n: common_vendor.o(clearFilter, "10")
+        })
       } : {}, {
-        o: common_vendor.f(common_vendor.unref(itemStore).categories, (tab, index, i0) => {
+        n: filterFavorite.value
+      }, filterFavorite.value ? {
+        o: common_vendor.o(($event) => filterFavorite.value = false, "90"),
+        p: common_vendor.p({
+          type: "close",
+          size: "14",
+          color: "#4b6646"
+        })
+      } : {}, {
+        q: common_vendor.o(clearFilter, "66")
+      }) : {}, {
+        r: common_vendor.f(common_vendor.unref(itemStore).categories, (tab, index, i0) => {
           return {
             a: common_vendor.t(tab),
             b: index,
@@ -129,14 +155,14 @@ const _sfc_main = {
             d: common_vendor.o(($event) => activeCategory.value = index, index)
           };
         }),
-        p: filteredItems.value.length > 0
+        s: filteredItems.value.length > 0
       }, filteredItems.value.length > 0 ? {
-        q: common_vendor.f(filteredItems.value, (item, index, i0) => {
+        t: common_vendor.f(filteredItems.value, (item, index, i0) => {
           return common_vendor.e({
             a: item.image,
             b: item.favorite
           }, item.favorite ? {
-            c: "231e6571-6-" + i0,
+            c: "0ff088b4-6-" + i0,
             d: common_vendor.p({
               type: "heart-filled",
               size: "10",
@@ -146,7 +172,7 @@ const _sfc_main = {
           } : {}, {
             f: common_vendor.t(item.name),
             g: common_vendor.t(item.cost),
-            h: "231e6571-7-" + i0,
+            h: "0ff088b4-7-" + i0,
             i: common_vendor.t(item.location || item.area),
             j: common_vendor.f(item.tags, (tag, tIndex, i1) => {
               return {
@@ -161,43 +187,43 @@ const _sfc_main = {
             m: getExpiryStatus(item).bg,
             n: getExpiryStatus(item).color
           } : {}, {
-            o: "231e6571-8-" + i0,
+            o: "0ff088b4-8-" + i0,
             p: item.id || index,
             q: common_vendor.o(($event) => goToDetail(item), item.id || index)
           });
         }),
-        r: common_vendor.p({
+        v: common_vendor.p({
           type: "location",
           size: "12",
           color: "#797c72"
         }),
-        s: common_vendor.p({
+        w: common_vendor.p({
           type: "right",
           size: "14",
           color: "#b1b3a8"
         })
       } : {
-        t: common_vendor.p({
+        x: common_vendor.p({
           type: "info",
           size: "64",
           color: "#eeefe5"
         })
       }, {
-        v: filteredItems.value.length > 0
+        y: filteredItems.value.length > 0
       }, filteredItems.value.length > 0 ? {
-        w: common_vendor.p({
+        z: common_vendor.p({
           type: "compose",
           size: "40",
           color: "#5f6056"
         })
       } : {}, {
-        x: common_vendor.p({
+        A: common_vendor.p({
           type: "plus",
           size: "32",
           color: "#fff"
         }),
-        y: common_vendor.o(goToAdd, "c3"),
-        z: common_vendor.p({
+        B: common_vendor.o(goToAdd, "dd"),
+        C: common_vendor.p({
           currentTab: 1
         })
       });

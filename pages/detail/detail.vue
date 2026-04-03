@@ -7,6 +7,7 @@
 				<text class="nav-title">物品详情</text>
 			</view>
 			<view class="nav-right">
+				<uni-icons :type="item.favorite ? 'heart-filled' : 'heart'" size="26" :color="item.favorite ? '#a73b21' : '#4b6646'" @click="handleToggleFavorite"></uni-icons>
 				<uni-icons type="share" size="24" color="#4b6646" class="nav-icon"></uni-icons>
 				<uni-icons type="more-filled" size="24" color="#4b6646"></uni-icons>
 			</view>
@@ -16,7 +17,7 @@
 			<!-- 物品图片展示 -->
 			<view class="hero-section">
 				<view class="image-wrapper">
-					<image class="main-img" :src="item.image" mode="aspectFill"></image>
+					<image class="main-img" :src="item.image" mode="aspectFit"></image>
 					<view class="photo-count" v-if="item.favorite">
 						<uni-icons type="heart-filled" size="14" color="#4b6646"></uni-icons>
 						<text>心仪</text>
@@ -59,6 +60,13 @@
 						</view>
 					</view>
 
+					<view class="tag-list" v-if="item.tags && item.tags.length > 0">
+						<view class="tag-item" v-for="(tag, index) in item.tags" :key="index">
+							<uni-icons type="paperplane" size="12" color="#5d6057"></uni-icons>
+							<text>{{ tag }}</text>
+						</view>
+					</view>
+
 					<!-- 保质期特别展示 -->
 					<view class="expiry-detail-card" v-if="item.productionDate && item.shelfLife">
 						<view class="expiry-main">
@@ -85,13 +93,6 @@
 							<text class="progress-text" v-else>已过期 {{ Math.abs(expiryInfo.daysLeft) }} 天</text>
 						</view>
 					</view>
-
-					<view class="tag-list">
-						<view class="tag-item" v-for="(tag, index) in item.tags" :key="index">
-							<uni-icons type="paperplane" size="12" color="#5d6057"></uni-icons>
-							<text>{{ tag }}</text>
-						</view>
-					</view>
 				</view>
 			</view>
 
@@ -105,31 +106,29 @@
 					<view class="card-body">
 						<view class="price-display">
 							<text class="symbol">¥</text>
-							<text class="value">{{ item.cost.replace('¥', '') }}</text>
+							<text class="value">{{ (item.cost || '¥0.00').replace('¥', '') }}</text>
 						</view>
 						<text class="desc">基于预计 {{ item.estimatedDays }} 天使用寿命计算</text>
 					</view>
 				</view>
 				
-				<view class="stats-grid">
-					<view class="small-card">
-						<text class="label">已使用</text>
-						<view class="value-row">
-							<text class="num">{{ usedDays }}</text>
-							<text class="unit">天</text>
-						</view>
-						<view class="progress-bar">
-							<view class="progress-inner" :style="{ width: progress + '%' }"></view>
-						</view>
+				<view class="small-card">
+					<text class="label">已使用</text>
+					<view class="value-row">
+						<text class="num">{{ usedDays }}</text>
+						<text class="unit">天</text>
 					</view>
-					<view class="small-card">
-						<text class="label">预计剩余</text>
-						<view class="value-row">
-							<text class="num">{{ Math.max(0, item.estimatedDays - usedDays) }}</text>
-							<text class="unit">天</text>
-						</view>
-						<text class="sub-desc">生命周期 {{ progress }}%</text>
+					<view class="progress-bar">
+						<view class="progress-inner" :style="{ width: progress + '%' }"></view>
 					</view>
+				</view>
+				<view class="small-card">
+					<text class="label">预计剩余</text>
+					<view class="value-row">
+						<text class="num">{{ Math.max(0, item.estimatedDays - usedDays) }}</text>
+						<text class="unit">天</text>
+					</view>
+					<text class="sub-desc">生命周期 {{ progress }}%</text>
 				</view>
 			</view>
 
@@ -246,8 +245,14 @@ const handleDelete = () => {
 	});
 };
 
+const handleToggleFavorite = () => {
+	itemStore.toggleFavorite(itemId.value);
+};
+
 const handleEdit = () => {
-	uni.showToast({ title: '编辑功能开发中', icon: 'none' });
+	uni.navigateTo({
+		url: `/pages/add/add?id=${itemId.value}`
+	});
 };
 </script>
 
@@ -266,7 +271,7 @@ const handleEdit = () => {
 		left: 0;
 		right: 0;
 		height: 88rpx;
-		padding: 0 48rpx;
+		padding: 0 220rpx 0 48rpx; /* 增加右侧内边距，避开微信胶囊按钮 */
 		padding-top: var(--status-bar-height);
 		background-color: rgba($shouna-background, 0.8);
 		backdrop-filter: blur(10px);
@@ -309,6 +314,7 @@ const handleEdit = () => {
 			aspect-ratio: 4/5;
 			border-radius: 48rpx;
 			overflow: hidden;
+			background-color: $shouna-surface-container-low;
 			
 			.main-img {
 				width: 100%;
@@ -432,6 +438,7 @@ const handleEdit = () => {
 				display: flex;
 				flex-wrap: wrap;
 				gap: 16rpx;
+				margin-top: 32rpx; /* 增加顶部边距，与上方网格信息拉开距离 */
 				
 				.tag-item {
 					background-color: $shouna-surface-variant;
@@ -450,7 +457,7 @@ const handleEdit = () => {
 			}
 
 			.expiry-detail-card {
-				margin-top: 40rpx;
+				margin-top: 32rpx; /* 统一边距 */
 				background-color: $shouna-surface-container-high;
 				padding: 32rpx;
 				border-radius: 32rpx;
@@ -516,20 +523,20 @@ const handleEdit = () => {
 		}
 	}
 
-	/* 统计模块 */
+	/* 统计模块 (Bento Grid) */
 	.stats-section {
 		padding: 0 32rpx;
 		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 32rpx;
+		grid-template-columns: 1.2fr 1fr;
+		grid-template-rows: 1fr 1fr;
+		gap: 24rpx;
 		margin-bottom: 80rpx;
 		
 		.cost-main-card {
-			grid-column: span 2;
+			grid-row: span 2;
 			background-color: $shouna-primary-container;
-			padding: 48rpx;
+			padding: 40rpx;
 			border-radius: 48rpx;
-			min-height: 320rpx;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
@@ -540,44 +547,49 @@ const handleEdit = () => {
 				align-items: center;
 				
 				.label {
-					font-size: 28rpx;
-					font-weight: 500;
-					color: rgba($shouna-on-surface, 0.8);
+					font-size: 24rpx;
+					font-weight: 600;
+					color: rgba($shouna-on-surface, 0.6);
+					text-transform: uppercase;
+					letter-spacing: 1rpx;
 				}
 			}
 			
 			.price-display {
 				display: flex;
 				align-items: baseline;
-				gap: 8rpx;
+				gap: 4rpx;
+				margin: 16rpx 0;
 				
 				.symbol {
-					font-size: 36rpx;
+					font-size: 32rpx;
 					font-weight: 800;
 					color: $shouna-on-surface;
 				}
 				
 				.value {
-					font-size: 80rpx;
+					font-size: 64rpx;
 					font-weight: 800;
 					color: $shouna-on-surface;
+					line-height: 1;
 				}
 			}
 			
 			.desc {
-				font-size: 24rpx;
-				color: rgba($shouna-on-surface, 0.6);
-				margin-top: 8rpx;
+				font-size: 20rpx;
+				color: rgba($shouna-on-surface, 0.5);
+				line-height: 1.4;
 			}
 		}
 		
 		.small-card {
 			background-color: $shouna-surface-container;
 			padding: 32rpx;
-			border-radius: 48rpx;
+			border-radius: 40rpx;
 			display: flex;
 			flex-direction: column;
-			gap: 16rpx;
+			justify-content: center;
+			gap: 12rpx;
 			
 			.label {
 				font-size: 20rpx;
@@ -590,24 +602,24 @@ const handleEdit = () => {
 			.value-row {
 				display: flex;
 				align-items: baseline;
-				gap: 8rpx;
+				gap: 4rpx;
 				
 				.num {
-					font-size: 48rpx;
-					font-weight: bold;
+					font-size: 40rpx;
+					font-weight: 800;
 					color: $shouna-on-surface;
 				}
 				
 				.unit {
-					font-size: 24rpx;
+					font-size: 20rpx;
 					color: $shouna-tertiary;
 				}
 			}
 			
 			.progress-bar {
 				width: 100%;
-				height: 12rpx;
-				background-color: $shouna-surface-variant;
+				height: 8rpx;
+				background-color: rgba($shouna-tertiary, 0.1);
 				border-radius: 100rpx;
 				overflow: hidden;
 				
@@ -619,9 +631,9 @@ const handleEdit = () => {
 			}
 			
 			.sub-desc {
-				font-size: 20rpx;
-				color: rgba($shouna-tertiary, 0.6);
-				font-style: italic;
+				font-size: 18rpx;
+				color: rgba($shouna-tertiary, 0.5);
+				font-weight: 500;
 			}
 		}
 	}

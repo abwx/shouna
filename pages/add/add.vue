@@ -4,7 +4,7 @@
 		<view class="nav-bar">
 			<view class="nav-left" @click="goBack">
 				<uni-icons type="arrow-left" size="24" color="#4b6646"></uni-icons>
-				<text class="nav-title">添加物品</text>
+				<text class="nav-title">{{ isEditMode ? '编辑物品' : '添加物品' }}</text>
 			</view>
 			<view class="nav-right">
 				<text class="save-btn" @click="handleSave">保存</text>
@@ -152,7 +152,7 @@
 
 		<!-- 底部操作按钮 -->
 		<view class="footer-action">
-			<button class="confirm-btn" @click="handleSave">确认保存</button>
+			<button class="confirm-btn" @click="handleSave">{{ isEditMode ? '保存修改' : '确认保存' }}</button>
 		</view>
 
 		<!-- 装饰性 SVG -->
@@ -167,12 +167,15 @@
 
 <script setup>
 import { ref, reactive } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 import { useItemStore } from '@/stores/item';
 
 const itemStore = useItemStore();
 
 const tempFilePath = ref('');
 const dailyCost = ref('0.00');
+const isEditMode = ref(false);
+const editingId = ref('');
 
 const formData = reactive({
 	name: '',
@@ -184,6 +187,44 @@ const formData = reactive({
 	area: '客厅',
 	tags: ['数码产品'],
 	remark: ''
+});
+
+const applyItemToForm = (item) => {
+	tempFilePath.value = item.image || '';
+	formData.name = item.name || '';
+	formData.price = item.price || '';
+	formData.buyDate = item.buyDate || '';
+	formData.productionDate = item.productionDate || '';
+	formData.shelfLife = item.shelfLife || '';
+	formData.estimatedDays = item.estimatedDays || 365;
+	formData.area = item.area || formData.area;
+	formData.remark = item.remark || '';
+
+	const nextTags = Array.isArray(item.tags) ? item.tags.filter(Boolean) : [];
+	formData.tags.splice(0, formData.tags.length, ...nextTags);
+	if (formData.tags.length === 0) {
+		formData.tags.push('数码产品');
+	}
+
+	const costNum = parseFloat(String(item.cost || '').replace('¥', ''));
+	if (Number.isFinite(costNum)) {
+		dailyCost.value = costNum.toFixed(2);
+	} else {
+		calculateCost();
+	}
+};
+
+onLoad((options) => {
+	const id = options?.id;
+	if (!id) return;
+	const item = itemStore.items.find(i => i.id === id);
+	if (!item) {
+		uni.showToast({ title: '找不到该物品', icon: 'none' });
+		return;
+	}
+	isEditMode.value = true;
+	editingId.value = id;
+	applyItemToForm(item);
 });
 
 const goBack = () => {
@@ -266,7 +307,6 @@ const handleSave = () => {
 	
 	uni.showLoading({ title: '保存中...' });
 	
-	// 准备保存的数据
 	const itemToSave = {
 		...formData,
 		image: tempFilePath.value || 'https://via.placeholder.com/150', // 默认占位图
@@ -274,9 +314,13 @@ const handleSave = () => {
 	};
 	
 	setTimeout(() => {
-		itemStore.addItem(itemToSave);
+		if (isEditMode.value) {
+			itemStore.updateItem(editingId.value, itemToSave);
+		} else {
+			itemStore.addItem(itemToSave);
+		}
 		uni.hideLoading();
-		uni.showToast({ title: '保存成功' });
+		uni.showToast({ title: isEditMode.value ? '更新成功' : '保存成功' });
 		setTimeout(() => {
 			uni.navigateBack();
 		}, 1500);
@@ -300,7 +344,7 @@ const handleSave = () => {
 		left: 0;
 		right: 0;
 		height: 88rpx;
-		padding: 0 $shouna-page-padding;
+		padding: 0 220rpx 0 $shouna-page-padding; /* 增加右侧内边距，避开微信胶囊按钮 */
 		padding-top: var(--status-bar-height);
 		background-color: rgba($shouna-background, 0.8);
 		backdrop-filter: blur(10px);

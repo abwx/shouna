@@ -1,5 +1,6 @@
 {
   "navigationBarTitleText": "全部物品",
+  "navigationStyle": "custom",
   "usingComponents": {
     "uni-icons": "../../uni_modules/uni-icons/components/uni-icons/uni-icons",
     "tab-bar": "../../components/tab-bar/tab-bar"

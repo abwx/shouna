@@ -1,20 +1,105 @@
 import { defineStore } from 'pinia';
 
 export const useItemStore = defineStore('item', {
-	state: () => ({
-		items: uni.getStorageSync('shouna_items') || [],
-		categories: ['全部', '常用', '闲置', '耗材', '贵重'],
-		areas: uni.getStorageSync('shouna_areas') || [
-			{ name: '客厅', icon: 'home-filled', color: '#4b6646' },
-			{ name: '卧室', icon: 'person-filled', color: '#4b6646' },
-			{ name: '厨房', icon: 'shop-filled', color: '#4b6646' },
-			{ name: '书房', icon: 'paperplane-filled', color: '#4b6646' },
-			{ name: '卫生间', icon: 'calendar-filled', color: '#4b6646' },
-			{ name: '阳台', icon: 'map-filled', color: '#4b6646' }
-		],
-		tags: uni.getStorageSync('shouna_tags') || ['数码产品', '高频使用', '易碎品', '服装', '日用品'],
-		searchFocus: false
-	}),
+	state: () => {
+		const savedItems = uni.getStorageSync('shouna_items');
+		const initialItems = (savedItems && savedItems.length > 0) ? savedItems : [
+			{
+				id: 'mock_1',
+				name: 'iPhone 13 Pro',
+				price: '5999',
+				area: '客厅',
+				category: '贵重',
+				tags: ['数码产品', '贵重品'],
+				buyDate: '2026-03-15',
+				favorite: true,
+				estimatedDays: 1825,
+				cost: '¥3.29',
+				image: 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?q=80&w=400&auto=format&fit=crop',
+				createTime: '2026-03-15T10:00:00.000Z',
+				remark: '购于官网，希望能用5年'
+			},
+			{
+				id: 'mock_2',
+				name: '特仑苏纯牛奶',
+				price: '65',
+				area: '厨房',
+				category: '耗材',
+				tags: ['日用品', '食品'],
+				buyDate: '2026-03-26',
+				productionDate: '2026-03-25',
+				shelfLife: '15',
+				favorite: false,
+				estimatedDays: 15,
+				cost: '¥4.33',
+				image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=400&auto=format&fit=crop',
+				createTime: '2026-03-26T14:00:00.000Z',
+				remark: '早晚各一瓶'
+			},
+			{
+				id: 'mock_3',
+				name: '冬季羽绒服',
+				price: '899',
+				area: '卧室',
+				category: '常用',
+				tags: ['服装', '保暖'],
+				buyDate: '2025-11-20',
+				favorite: false,
+				estimatedDays: 1095,
+				cost: '¥0.82',
+				image: 'https://images.unsplash.com/photo-1544022613-e87ce7526ed1?q=80&w=400&auto=format&fit=crop',
+				createTime: '2025-11-20T09:00:00.000Z',
+				remark: '波司登的，很暖和'
+			},
+			{
+				id: 'mock_4',
+				name: '机械键盘',
+				price: '499',
+				area: '书房',
+				category: '常用',
+				tags: ['数码产品', '外设'],
+				buyDate: '2026-02-10',
+				favorite: false,
+				estimatedDays: 730,
+				cost: '¥0.68',
+				image: 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?q=80&w=400&auto=format&fit=crop',
+				createTime: '2026-02-10T16:00:00.000Z',
+				remark: '青轴，打字很有手感'
+			},
+			{
+				id: 'mock_5',
+				name: '黑咖啡豆',
+				price: '128',
+				area: '厨房',
+				category: '耗材',
+				tags: ['日用品', '食品'],
+				buyDate: '2026-03-10',
+				favorite: false,
+				estimatedDays: 30,
+				cost: '¥4.27',
+				image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=400&auto=format&fit=crop',
+				createTime: '2026-03-10T08:30:00.000Z',
+				remark: '阿拉比卡豆，深度烘焙'
+			}
+		];
+		
+		return {
+			items: initialItems,
+			categories: ['全部', '常用', '闲置', '耗材', '贵重'],
+			areas: uni.getStorageSync('shouna_areas') || [
+				{ name: '客厅', icon: 'home-filled', color: '#4b6646' },
+				{ name: '卧室', icon: 'person-filled', color: '#4b6646' },
+				{ name: '厨房', icon: 'shop-filled', color: '#4b6646' },
+				{ name: '书房', icon: 'paperplane-filled', color: '#4b6646' },
+				{ name: '卫生间', icon: 'calendar-filled', color: '#4b6646' },
+				{ name: '阳台', icon: 'map-filled', color: '#4b6646' }
+			],
+			tags: uni.getStorageSync('shouna_tags') || ['数码产品', '高频使用', '易碎品', '服装', '日用品'],
+			searchFocus: false,
+			filterFavorite: false,
+			filterArea: ''
+		};
+	},
 	getters: {
 		totalCount: (state) => state.items.length,
 		totalValue: (state) => state.items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0),
@@ -36,6 +121,7 @@ export const useItemStore = defineStore('item', {
 			const stats = {};
 			state.items.forEach(item => {
 				const areaName = item.area;
+				if (!areaName) return;
 				stats[areaName] = (stats[areaName] || 0) + 1;
 			});
 			return stats;
@@ -99,20 +185,58 @@ export const useItemStore = defineStore('item', {
 		},
 		deleteArea(name) {
 			this.areas = this.areas.filter(a => (a.name || a) !== name);
-			// 注意：这里可以选择将该区域下的物品移至“默认”区域或保留
+			this.items.forEach(item => {
+				if (item.area === name) {
+					item.area = '';
+				}
+			});
 			this.saveToStorage();
 		},
 		saveToStorage() {
-			uni.setStorageSync('shouna_items', this.items);
-			uni.setStorageSync('shouna_tags', this.tags);
-			uni.setStorageSync('shouna_areas', this.areas);
+			uni.setStorageSync('shouna_items', JSON.parse(JSON.stringify(this.items)));
+			uni.setStorageSync('shouna_tags', JSON.parse(JSON.stringify(this.tags)));
+			uni.setStorageSync('shouna_areas', JSON.parse(JSON.stringify(this.areas)));
 		},
 		clearAll() {
 			this.items = [];
 			this.saveToStorage();
 		},
+		resetAllData() {
+			this.items = [];
+			this.tags = ['数码产品', '高频使用', '易碎品', '服装', '日用品'];
+			this.areas = [
+				{ name: '客厅', icon: 'home-filled', color: '#4b6646' },
+				{ name: '卧室', icon: 'person-filled', color: '#4b6646' },
+				{ name: '厨房', icon: 'shop-filled', color: '#4b6646' },
+				{ name: '书房', icon: 'paperplane-filled', color: '#4b6646' },
+				{ name: '卫生间', icon: 'calendar-filled', color: '#4b6646' },
+				{ name: '阳台', icon: 'map-filled', color: '#4b6646' }
+			];
+			uni.removeStorageSync('shouna_items');
+			uni.removeStorageSync('shouna_tags');
+			uni.removeStorageSync('shouna_areas');
+			uni.removeStorageSync('shouna_backup');
+		},
+		importData(data) {
+			try {
+				const parsed = typeof data === 'string' ? JSON.parse(data) : data;
+				if (parsed.items) this.items = parsed.items;
+				if (parsed.tags) this.tags = parsed.tags;
+				if (parsed.areas) this.areas = parsed.areas;
+				this.saveToStorage();
+				return true;
+			} catch (e) {
+				return false;
+			}
+		},
 		setSearchFocus(value) {
 			this.searchFocus = value;
+		},
+		setFilterFavorite(value) {
+			this.filterFavorite = value;
+		},
+		setFilterArea(value) {
+			this.filterArea = value;
 		}
 	}
 });

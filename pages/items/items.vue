@@ -7,7 +7,6 @@
 				<text class="nav-title">MAD收纳</text>
 			</view>
 			<view class="nav-right">
-				<uni-icons type="search" size="24" color="#4b6646"></uni-icons>
 			</view>
 		</view>
 
@@ -40,10 +39,14 @@
 			</view>
 
 			<!-- 活动筛选展示 -->
-			<view class="active-filters" v-if="filterArea">
-				<view class="filter-tag">
+			<view class="active-filters" v-if="filterArea || filterFavorite">
+				<view class="filter-tag" v-if="filterArea">
 					<text>区域: {{ filterArea }}</text>
 					<uni-icons type="close" size="14" color="#4b6646" @click="filterArea = ''"></uni-icons>
+				</view>
+				<view class="filter-tag" v-if="filterFavorite">
+					<text>仅看心仪</text>
+					<uni-icons type="close" size="14" color="#4b6646" @click="filterFavorite = false"></uni-icons>
 				</view>
 				<text class="clear-all" @click="clearFilter">清除全部</text>
 			</view>
@@ -67,7 +70,7 @@
 				<view class="items-list" v-if="filteredItems.length > 0">
 					<view class="item-row" v-for="(item, index) in filteredItems" :key="item.id || index" @click="goToDetail(item)">
 						<view class="img-box">
-							<image class="item-img" :src="item.image" mode="aspectFill"></image>
+							<image class="item-img" :src="item.image" mode="aspectFit"></image>
 							<view class="fav-badge" v-if="item.favorite" @click.stop="itemStore.toggleFavorite(item.id)">
 								<uni-icons type="heart-filled" size="10" color="#fff"></uni-icons>
 							</view>
@@ -133,6 +136,7 @@ const itemStore = useItemStore();
 const activeCategory = ref(0);
 const searchKeyword = ref('');
 const filterArea = ref('');
+const filterFavorite = ref(false);
 
 // 判断物品是否过期或临期
 const getExpiryStatus = (item) => {
@@ -150,22 +154,38 @@ const getExpiryStatus = (item) => {
 onShow(() => {
 	uni.hideTabBar();
 	
+	// 处理从首页“心仪物品”跳转过来的逻辑
+	if (itemStore.filterFavorite) {
+		filterFavorite.value = true;
+		activeCategory.value = 0;
+		itemStore.setFilterFavorite(false);
+	}
+
+	// 处理从区域页跳转过来的逻辑
+	if (itemStore.filterArea) {
+		filterArea.value = itemStore.filterArea;
+		activeCategory.value = 0;
+		itemStore.setFilterArea('');
+	}
+	
 	// 处理从首页“标签筛选”跳转过来的逻辑
 	if (itemStore.searchFocus) {
-		// 可以在这里执行一些逻辑，比如自动打开搜索键盘（如果平台支持）
-		// 或者简单的提示用户
 		itemStore.setSearchFocus(false);
 	}
 });
 
 onLoad((options) => {
+	// 仍然保留对 URL 参数的支持，以防万一
 	if (options.area) {
 		filterArea.value = options.area;
-		// 如果是从区域页跳过来的，可以自动切换到“全部”分类并应用过滤
 		activeCategory.value = 0;
 	}
 	if (options.tag) {
 		searchKeyword.value = options.tag;
+	}
+	if (options.favorite === 'true') {
+		filterFavorite.value = true;
+		activeCategory.value = 0;
 	}
 });
 
@@ -176,11 +196,15 @@ const filteredItems = computed(() => {
 	if (filterArea.value) {
 		list = list.filter(item => item.area === filterArea.value);
 	}
+
+	// 心仪筛选
+	if (filterFavorite.value) {
+		list = list.filter(item => item.favorite);
+	}
 	
 	// 分类筛选
 	const category = itemStore.categories[activeCategory.value];
 	if (category !== '全部') {
-		// 这里简单逻辑：如果标签包含该分类，或者业务逻辑定义的其他过滤
 		list = list.filter(item => item.tags.includes(category) || (category === '常用' && item.favorite));
 	}
 	
@@ -200,6 +224,7 @@ const filteredItems = computed(() => {
 const clearFilter = () => {
 	filterArea.value = '';
 	searchKeyword.value = '';
+	filterFavorite.value = false;
 	activeCategory.value = 0;
 };
 
@@ -232,7 +257,7 @@ const goToDetail = (item) => {
 		left: 0;
 		right: 0;
 		height: 88rpx;
-		padding: 0 $shouna-page-padding;
+		padding: 0 220rpx 0 $shouna-page-padding; /* 增加右侧内边距，避开微信胶囊按钮 */
 		padding-top: var(--status-bar-height);
 		background-color: rgba($shouna-background, 0.8);
 		backdrop-filter: blur(10px);

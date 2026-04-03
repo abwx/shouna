@@ -18,6 +18,8 @@ const _sfc_main = {
     const itemStore = stores_item.useItemStore();
     const tempFilePath = common_vendor.ref("");
     const dailyCost = common_vendor.ref("0.00");
+    const isEditMode = common_vendor.ref(false);
+    const editingId = common_vendor.ref("");
     const formData = common_vendor.reactive({
       name: "",
       price: "",
@@ -28,6 +30,41 @@ const _sfc_main = {
       area: "客厅",
       tags: ["数码产品"],
       remark: ""
+    });
+    const applyItemToForm = (item) => {
+      tempFilePath.value = item.image || "";
+      formData.name = item.name || "";
+      formData.price = item.price || "";
+      formData.buyDate = item.buyDate || "";
+      formData.productionDate = item.productionDate || "";
+      formData.shelfLife = item.shelfLife || "";
+      formData.estimatedDays = item.estimatedDays || 365;
+      formData.area = item.area || formData.area;
+      formData.remark = item.remark || "";
+      const nextTags = Array.isArray(item.tags) ? item.tags.filter(Boolean) : [];
+      formData.tags.splice(0, formData.tags.length, ...nextTags);
+      if (formData.tags.length === 0) {
+        formData.tags.push("数码产品");
+      }
+      const costNum = parseFloat(String(item.cost || "").replace("¥", ""));
+      if (Number.isFinite(costNum)) {
+        dailyCost.value = costNum.toFixed(2);
+      } else {
+        calculateCost();
+      }
+    };
+    common_vendor.onLoad((options) => {
+      const id = options == null ? void 0 : options.id;
+      if (!id)
+        return;
+      const item = itemStore.items.find((i) => i.id === id);
+      if (!item) {
+        common_vendor.index.showToast({ title: "找不到该物品", icon: "none" });
+        return;
+      }
+      isEditMode.value = true;
+      editingId.value = id;
+      applyItemToForm(item);
     });
     const goBack = () => {
       common_vendor.index.navigateBack();
@@ -106,9 +143,13 @@ const _sfc_main = {
         cost: `¥${dailyCost.value}`
       };
       setTimeout(() => {
-        itemStore.addItem(itemToSave);
+        if (isEditMode.value) {
+          itemStore.updateItem(editingId.value, itemToSave);
+        } else {
+          itemStore.addItem(itemToSave);
+        }
         common_vendor.index.hideLoading();
-        common_vendor.index.showToast({ title: "保存成功" });
+        common_vendor.index.showToast({ title: isEditMode.value ? "更新成功" : "保存成功" });
         setTimeout(() => {
           common_vendor.index.navigateBack();
         }, 1500);
@@ -121,62 +162,63 @@ const _sfc_main = {
           size: "24",
           color: "#4b6646"
         }),
-        b: common_vendor.o(goBack, "d2"),
-        c: common_vendor.o(handleSave, "4e"),
-        d: !tempFilePath.value
+        b: common_vendor.t(isEditMode.value ? "编辑物品" : "添加物品"),
+        c: common_vendor.o(goBack, "8e"),
+        d: common_vendor.o(handleSave, "67"),
+        e: !tempFilePath.value
       }, !tempFilePath.value ? {
-        e: common_vendor.p({
+        f: common_vendor.p({
           type: "camera-filled",
           size: "32",
           color: "#4b6646"
         })
       } : {
-        f: tempFilePath.value
+        g: tempFilePath.value
       }, {
-        g: common_vendor.o(chooseImage, "4b"),
-        h: formData.name,
-        i: common_vendor.o(($event) => formData.name = $event.detail.value, "c6"),
-        j: common_vendor.o([($event) => formData.price = $event.detail.value, calculateCost], "e9"),
-        k: formData.price,
-        l: common_vendor.t(formData.buyDate || "yyyy/mm/dd"),
-        m: !formData.buyDate ? 1 : "",
-        n: common_vendor.p({
+        h: common_vendor.o(chooseImage, "80"),
+        i: formData.name,
+        j: common_vendor.o(($event) => formData.name = $event.detail.value, "4e"),
+        k: common_vendor.o([($event) => formData.price = $event.detail.value, calculateCost], "e9"),
+        l: formData.price,
+        m: common_vendor.t(formData.buyDate || "yyyy/mm/dd"),
+        n: !formData.buyDate ? 1 : "",
+        o: common_vendor.p({
           type: "calendar",
           size: "18",
           color: "#797c72"
         }),
-        o: formData.buyDate,
-        p: common_vendor.o(onDateChange, "89"),
-        q: common_vendor.t(formData.productionDate || "yyyy/mm/dd"),
-        r: !formData.productionDate ? 1 : "",
-        s: common_vendor.p({
+        p: formData.buyDate,
+        q: common_vendor.o(onDateChange, "1b"),
+        r: common_vendor.t(formData.productionDate || "yyyy/mm/dd"),
+        s: !formData.productionDate ? 1 : "",
+        t: common_vendor.p({
           type: "calendar",
           size: "18",
           color: "#797c72"
         }),
-        t: formData.productionDate,
-        v: common_vendor.o(onProdDateChange, "fa"),
-        w: formData.shelfLife,
-        x: common_vendor.o(($event) => formData.shelfLife = $event.detail.value, "79"),
-        y: common_vendor.p({
+        v: formData.productionDate,
+        w: common_vendor.o(onProdDateChange, "0a"),
+        x: formData.shelfLife,
+        y: common_vendor.o(($event) => formData.shelfLife = $event.detail.value, "d2"),
+        z: common_vendor.p({
           type: "paperplane-filled",
           size: "64",
           color: "#4b6646"
         }),
-        z: common_vendor.p({
+        A: common_vendor.p({
           type: "tune-filled",
           size: "20",
           color: "#4b6646"
         }),
-        A: common_vendor.o([($event) => formData.estimatedDays = $event.detail.value, calculateCost], "5e"),
-        B: formData.estimatedDays,
-        C: common_vendor.t(dailyCost.value),
-        D: common_vendor.p({
+        B: common_vendor.o([($event) => formData.estimatedDays = $event.detail.value, calculateCost], "5e"),
+        C: formData.estimatedDays,
+        D: common_vendor.t(dailyCost.value),
+        E: common_vendor.p({
           type: "right",
           size: "14",
           color: "#797c72"
         }),
-        E: common_vendor.f(common_vendor.unref(itemStore).areaNames, (areaName, index, i0) => {
+        F: common_vendor.f(common_vendor.unref(itemStore).areaNames, (areaName, index, i0) => {
           return {
             a: common_vendor.t(areaName),
             b: index,
@@ -184,13 +226,13 @@ const _sfc_main = {
             d: common_vendor.o(($event) => formData.area = areaName, index)
           };
         }),
-        F: common_vendor.p({
+        G: common_vendor.p({
           type: "plus",
           size: "18",
           color: "#797c72"
         }),
-        G: common_vendor.o(handleAddArea, "e3"),
-        H: common_vendor.f(common_vendor.unref(itemStore).tags, (tag, index, i0) => {
+        H: common_vendor.o(handleAddArea, "2c"),
+        I: common_vendor.f(common_vendor.unref(itemStore).tags, (tag, index, i0) => {
           return common_vendor.e({
             a: formData.tags.includes(tag)
           }, formData.tags.includes(tag) ? {} : {}, {
@@ -200,22 +242,23 @@ const _sfc_main = {
             e: common_vendor.o(($event) => toggleTag(tag), index)
           });
         }),
-        I: common_vendor.p({
+        J: common_vendor.p({
           type: "plus",
           size: "12",
           color: "#797c72"
         }),
-        J: common_vendor.o(handleAddTag, "d7"),
-        K: formData.remark,
-        L: common_vendor.o(($event) => formData.remark = $event.detail.value, "e1"),
-        M: common_vendor.o(handleSave, "94"),
-        N: common_vendor.p({
+        K: common_vendor.o(handleAddTag, "fe"),
+        L: formData.remark,
+        M: common_vendor.o(($event) => formData.remark = $event.detail.value, "d4"),
+        N: common_vendor.t(isEditMode.value ? "保存修改" : "确认保存"),
+        O: common_vendor.o(handleSave, "00"),
+        P: common_vendor.p({
           d: "M10 50C10 50 30 10 50 10C70 10 90 50 90 50C90 50 70 90 50 90C30 90 10 50 10 50Z",
           stroke: "#5f6056",
           ["stroke-opacity"]: "0.2",
           ["stroke-width"]: "2"
         }),
-        O: common_vendor.p({
+        Q: common_vendor.p({
           cx: "50",
           cy: "50",
           r: "15",
@@ -223,7 +266,7 @@ const _sfc_main = {
           ["stroke-opacity"]: "0.2",
           ["stroke-width"]: "2"
         }),
-        P: common_vendor.p({
+        R: common_vendor.p({
           width: "60",
           height: "60",
           viewBox: "0 0 100 100",

@@ -3,13 +3,15 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "我的收纳"
+				"navigationBarTitleText": "我的收纳",
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path": "pages/items/items",
 			"style": {
-				"navigationBarTitleText": "全部物品"
+				"navigationBarTitleText": "全部物品",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -29,7 +31,8 @@
 		{
 			"path": "pages/area/area",
 			"style": {
-				"navigationBarTitleText": "我的区域"
+				"navigationBarTitleText": "我的区域",
+				"navigationStyle": "custom"
 			}
 		},
 		{

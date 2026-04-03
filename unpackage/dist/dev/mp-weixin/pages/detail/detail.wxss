@@ -15,6 +15,7 @@
 /* 最深米色 - 分割线等 */
 /* 纯白 */
 /* 变体色 - 描边/背景 */
+/* 红色 - 错误/危险色 */
 /* 页面统一边距 */
 /* 兼容 uni-app 默认变量 */
 /* 文字尺寸 */
@@ -39,7 +40,8 @@
   left: 0;
   right: 0;
   height: 88rpx;
-  padding: 0 48rpx;
+  padding: 0 220rpx 0 48rpx;
+  /* 增加右侧内边距，避开微信胶囊按钮 */
   padding-top: var(--status-bar-height);
   background-color: rgba(250, 250, 243, 0.8);
   -webkit-backdrop-filter: blur(10px);
@@ -79,6 +81,7 @@
   aspect-ratio: 4/5;
   border-radius: 48rpx;
   overflow: hidden;
+  background-color: #f4f4eb;
 }
 .hero-section .image-wrapper .main-img {
   width: 100%;
@@ -188,6 +191,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 16rpx;
+  margin-top: 32rpx;
+  /* 增加顶部边距，与上方网格信息拉开距离 */
 }
 .info-card-section .info-card .tag-list .tag-item {
   background-color: #e2e4d8;
@@ -203,7 +208,8 @@
   color: #30332c;
 }
 .info-card-section .info-card .expiry-detail-card {
-  margin-top: 40rpx;
+  margin-top: 32rpx;
+  /* 统一边距 */
   background-color: #e8e9df;
   padding: 32rpx;
   border-radius: 32rpx;
@@ -256,20 +262,20 @@
   font-weight: 600;
 }
 
-/* 统计模块 */
+/* 统计模块 (Bento Grid) */
 .stats-section {
   padding: 0 32rpx;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32rpx;
+  grid-template-columns: 1.2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 24rpx;
   margin-bottom: 80rpx;
 }
 .stats-section .cost-main-card {
-  grid-column: span 2;
+  grid-row: span 2;
   background-color: #ccebc2;
-  padding: 48rpx;
+  padding: 40rpx;
   border-radius: 48rpx;
-  min-height: 320rpx;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -280,37 +286,42 @@
   align-items: center;
 }
 .stats-section .cost-main-card .card-header .label {
-  font-size: 28rpx;
-  font-weight: 500;
-  color: rgba(48, 51, 44, 0.8);
+  font-size: 24rpx;
+  font-weight: 600;
+  color: rgba(48, 51, 44, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1rpx;
 }
 .stats-section .cost-main-card .price-display {
   display: flex;
   align-items: baseline;
-  gap: 8rpx;
+  gap: 4rpx;
+  margin: 16rpx 0;
 }
 .stats-section .cost-main-card .price-display .symbol {
-  font-size: 36rpx;
+  font-size: 32rpx;
   font-weight: 800;
   color: #30332c;
 }
 .stats-section .cost-main-card .price-display .value {
-  font-size: 80rpx;
+  font-size: 64rpx;
   font-weight: 800;
   color: #30332c;
+  line-height: 1;
 }
 .stats-section .cost-main-card .desc {
-  font-size: 24rpx;
-  color: rgba(48, 51, 44, 0.6);
-  margin-top: 8rpx;
+  font-size: 20rpx;
+  color: rgba(48, 51, 44, 0.5);
+  line-height: 1.4;
 }
 .stats-section .small-card {
   background-color: #eeefe5;
   padding: 32rpx;
-  border-radius: 48rpx;
+  border-radius: 40rpx;
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  justify-content: center;
+  gap: 12rpx;
 }
 .stats-section .small-card .label {
   font-size: 20rpx;
@@ -322,21 +333,21 @@
 .stats-section .small-card .value-row {
   display: flex;
   align-items: baseline;
-  gap: 8rpx;
+  gap: 4rpx;
 }
 .stats-section .small-card .value-row .num {
-  font-size: 48rpx;
-  font-weight: bold;
+  font-size: 40rpx;
+  font-weight: 800;
   color: #30332c;
 }
 .stats-section .small-card .value-row .unit {
-  font-size: 24rpx;
+  font-size: 20rpx;
   color: #5f6056;
 }
 .stats-section .small-card .progress-bar {
   width: 100%;
-  height: 12rpx;
-  background-color: #e2e4d8;
+  height: 8rpx;
+  background-color: rgba(95, 96, 86, 0.1);
   border-radius: 100rpx;
   overflow: hidden;
 }
@@ -346,9 +357,9 @@
   border-radius: 100rpx;
 }
 .stats-section .small-card .sub-desc {
-  font-size: 20rpx;
-  color: rgba(95, 96, 86, 0.6);
-  font-style: italic;
+  font-size: 18rpx;
+  color: rgba(95, 96, 86, 0.5);
+  font-weight: 500;
 }
 .records-section {
   padding: 0 32rpx;

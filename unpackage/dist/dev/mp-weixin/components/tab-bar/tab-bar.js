@@ -42,11 +42,11 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
     a: common_vendor.f($data.tabs, (tab, index, i0) => {
       return {
-        a: "672f82b3-0-" + i0,
+        a: "7f654a60-0-" + i0,
         b: common_vendor.p({
           type: tab.icon,
           size: "24",
-          color: $props.currentTab === index ? "#4b6646" : "#5f6056"
+          color: $props.currentTab === index ? "var(--shouna-primary)" : "var(--shouna-tertiary)"
         }),
         c: common_vendor.t(tab.text),
         d: index,

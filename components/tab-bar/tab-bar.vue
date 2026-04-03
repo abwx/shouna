@@ -11,7 +11,7 @@
 				<uni-icons 
 					:type="tab.icon" 
 					size="24" 
-					:color="currentTab === index ? '#4b6646' : '#5f6056'"
+					:color="currentTab === index ? 'var(--shouna-primary)' : 'var(--shouna-tertiary)'"
 				></uni-icons>
 			</view>
 			<text class="tab-label">{{ tab.text }}</text>
@@ -93,16 +93,16 @@
 			.tab-label {
 				font-size: 20rpx;
 				font-weight: 500;
-				color: $shouna-tertiary;
+				color: var(--shouna-tertiary);
 			}
 			
 			&.active {
 				.icon-wrapper {
-					background-color: $shouna-primary-container;
+					background-color: var(--shouna-primary-container);
 				}
 				
 				.tab-label {
-					color: $shouna-primary;
+					color: var(--shouna-primary);
 					font-weight: bold;
 				}
 			}

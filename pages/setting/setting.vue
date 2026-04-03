@@ -1,18 +1,22 @@
 <template>
-	<view class="container">
+	<view class="container" :style="themeStore.cssVars">
 		<!-- 顶部导航栏 -->
 		<view class="nav-bar">
 			<view class="nav-left">
-				<uni-icons type="shop-filled" size="24" color="#4b6646"></uni-icons>
-				<text class="nav-title">设置</text>
+				<uni-icons type="shop-filled" size="24" color="var(--shouna-primary)"></uni-icons>
+				<text class="nav-title">MAD收纳</text>
 			</view>
 			<view class="nav-right">
-				<uni-icons type="search" size="24" color="#4b6646"></uni-icons>
 			</view>
 		</view>
 
 		<scroll-view scroll-y class="main-content">
 			<view class="content-wrapper">
+				<!-- 标题 -->
+				<view class="page-header">
+					<text class="page-title">设置</text>
+				</view>
+
 				<!-- 用户信息卡片 -->
 				<view class="profile-section">
 					<view class="profile-card">
@@ -38,7 +42,7 @@
 						<view class="list-item" v-for="(item, index) in dataSettings" :key="index" @tap="handleItemClick(item)">
 							<view class="item-left">
 								<view class="icon-box" :class="{ 'is-danger': item.danger }">
-									<uni-icons :type="item.icon" size="20" :color="item.danger ? '#a73b21' : '#4b6646'"></uni-icons>
+									<uni-icons :type="item.icon" size="20" :color="item.danger ? '#a73b21' : 'var(--shouna-primary)'"></uni-icons>
 								</view>
 								<text class="item-label" :class="{ 'is-danger': item.danger }">{{ item.label }}</text>
 							</view>
@@ -54,15 +58,15 @@
 						<view class="group-line"></view>
 					</view>
 					<view class="bento-grid">
-						<view class="bento-card">
-							<uni-icons type="color-filled" size="32" color="#4b6646"></uni-icons>
+						<view class="bento-card" @tap="openThemePicker">
+							<uni-icons type="color-filled" size="32" color="var(--shouna-primary)"></uni-icons>
 							<view class="card-info">
 								<text class="card-title">主题模式</text>
-								<text class="card-desc">莫兰迪绿 (浅色)</text>
+								<text class="card-desc">{{ themeStore.currentTheme.name }} ({{ themeStore.currentTheme.desc }})</text>
 							</view>
 						</view>
 						<view class="bento-card">
-							<uni-icons type="list" size="32" color="#4b6646"></uni-icons>
+							<uni-icons type="list" size="32" color="var(--shouna-primary)"></uni-icons>
 							<view class="card-info">
 								<text class="card-title">列表布局</text>
 								<text class="card-desc">舒适宫格</text>
@@ -70,7 +74,7 @@
 						</view>
 						<view class="budget-card">
 							<view class="budget-left">
-								<uni-icons type="wallet-filled" size="24" color="#4b6646"></uni-icons>
+								<uni-icons type="wallet-filled" size="24" color="var(--shouna-primary)"></uni-icons>
 								<view class="budget-info">
 									<text class="budget-title">预算设置</text>
 									<text class="budget-desc">管理月度收纳采购预算</text>
@@ -114,38 +118,371 @@
 			</view>
 		</scroll-view>
 
+		<!-- 统一风格的自定义弹窗 -->
+		<view class="popup-mask" v-if="popup.show" @click="closePopup">
+			<view class="popup-content" @click.stop>
+				<view class="popup-header">
+					<text class="popup-title">{{ popup.title }}</text>
+					<view class="close-btn" @click="closePopup">
+						<uni-icons type="closeempty" size="20" color="#5f6056"></uni-icons>
+					</view>
+				</view>
+
+				<view class="popup-body">
+					<view class="warning-box" :class="{ 'is-success': popup.type === 'success', 'is-danger': popup.type === 'danger' }">
+						<uni-icons 
+							:type="popup.type === 'danger' ? 'info-filled' : 'checkbox-filled'" 
+							size="64" 
+							:color="popup.type === 'danger' ? '#a73b21' : '#4b6646'"
+						></uni-icons>
+						<text class="warning-text" :class="{ 'is-success': popup.type === 'success', 'is-danger': popup.type === 'danger' }">{{ popup.content }}</text>
+					</view>
+
+					<view class="popup-actions">
+						<button v-if="popup.showCancel" class="cancel-popup-btn" @click="closePopup">
+							<text>{{ popup.cancelText || '取消' }}</text>
+						</button>
+						<button 
+							:class="popup.type === 'danger' ? 'delete-popup-btn' : 'save-popup-btn'" 
+							@click="handlePopupConfirm"
+						>
+							<text>{{ popup.confirmText || '确定' }}</text>
+							<uni-icons v-if="popup.type === 'danger'" type="trash-filled" size="18" color="#fff"></uni-icons>
+							<uni-icons v-else type="checkmarkempty" size="18" color="#fff"></uni-icons>
+						</button>
+					</view>
+				</view>
+			</view>
+		</view>
+
 		<!-- 自定义 TabBar -->
 		<tab-bar :currentTab="4"></tab-bar>
 	</view>
 </template>
 
 <script setup>
+import { ref, reactive } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
+import { useItemStore } from '@/stores/item';
+import { useThemeStore } from '@/stores/theme';
 import TabBar from '@/components/tab-bar/tab-bar.vue';
+
+const itemStore = useItemStore();
+const themeStore = useThemeStore();
+
+// 统一弹窗状态管理
+const popup = reactive({
+	show: false,
+	title: '',
+	content: '',
+	type: 'danger', // 'danger' | 'success'
+	showCancel: true,
+	cancelText: '取消',
+	confirmText: '确定',
+	confirmCallback: null
+});
 
 onShow(() => {
 	uni.hideTabBar();
 });
 
+const openThemePicker = () => {
+	const itemList = themeStore.themes.map(t => `${t.name} (${t.desc})`);
+	uni.showActionSheet({
+		itemList,
+		success: (res) => {
+			const selected = themeStore.themes[res.tapIndex];
+			if (selected) themeStore.setTheme(selected.key);
+		}
+	});
+};
+
 const dataSettings = [
-	{ label: '数据备份', icon: 'cloud-upload-filled', danger: false },
-	{ label: '导出记录', icon: 'redo-filled', danger: false },
-	{ label: '恢复数据', icon: 'refresh-filled', danger: false },
-	{ label: '清空所有内容', icon: 'trash-filled', danger: true }
+	{ id: 'backup', label: '数据备份', icon: 'cloud-upload-filled', danger: false },
+	{ id: 'export', label: '导出记录', icon: 'redo-filled', danger: false },
+	{ id: 'restore', label: '恢复数据', icon: 'refresh-filled', danger: false },
+	{ id: 'clear', label: '清空所有内容', icon: 'trash-filled', danger: true }
 ]
 
 const handleItemClick = (item) => {
-	if (item.danger) {
-		uni.showModal({
-			title: '确认清空',
-			content: '此操作将永久删除所有收纳数据，无法恢复。',
-			confirmColor: '#a73b21'
-		})
+	switch (item.id) {
+		case 'backup':
+			handleBackup();
+			break;
+		case 'export':
+			handleExport();
+			break;
+		case 'restore':
+			handleRestore();
+			break;
+		case 'clear':
+			showCustomPopup({
+				title: '确认清空',
+				content: '此操作将永久删除所有收纳数据及自定义标签/区域，且无法恢复！',
+				type: 'danger',
+				confirmText: '确认清空',
+				cancelText: '我再想想',
+				confirmCallback: confirmClear
+			});
+			break;
 	}
+}
+
+// 显示自定义弹窗的工具函数
+const showCustomPopup = (config) => {
+	popup.title = config.title || '提示';
+	popup.content = config.content || '';
+	popup.type = config.type || 'success';
+	popup.showCancel = config.showCancel !== false;
+	popup.cancelText = config.cancelText || '取消';
+	popup.confirmText = config.confirmText || '确定';
+	popup.confirmCallback = config.confirmCallback || null;
+	popup.show = true;
+};
+
+const closePopup = () => {
+	popup.show = false;
+};
+
+const handlePopupConfirm = () => {
+	if (popup.confirmCallback) {
+		popup.confirmCallback();
+	}
+	closePopup();
+};
+
+// 1. 数据备份
+const handleBackup = () => {
+	const data = {
+		items: itemStore.items,
+		tags: itemStore.tags,
+		areas: itemStore.areas,
+		backupTime: new Date().toLocaleString()
+	};
+	uni.setStorageSync('shouna_backup', data);
+	uni.showToast({
+		title: '备份成功',
+		icon: 'success'
+	});
+};
+
+// 2. 导出记录 (复制 JSON 到剪贴板)
+const handleExport = () => {
+	const data = {
+		items: itemStore.items,
+		tags: itemStore.tags,
+		areas: itemStore.areas,
+		exportTime: new Date().toLocaleString(),
+		version: '2.4.0'
+	};
+	const jsonStr = JSON.stringify(data);
+	uni.setClipboardData({
+		data: jsonStr,
+		success: () => {
+			showCustomPopup({
+				title: '导出成功',
+				content: '收纳数据已转换为 JSON 字符串并复制到剪贴板，请妥善保存。',
+				type: 'success',
+				showCancel: false,
+				confirmText: '好哒'
+			});
+		}
+	});
+};
+
+// 3. 恢复数据
+const handleRestore = () => {
+	uni.showActionSheet({
+		itemList: ['从本地备份恢复', '从剪贴板导入'],
+		success: (res) => {
+			if (res.tapIndex === 0) {
+				// 从本地备份恢复
+				const backup = uni.getStorageSync('shouna_backup');
+				if (backup) {
+					showCustomPopup({
+						title: '确认恢复',
+						content: `发现备份于 ${backup.backupTime} 的数据，确认恢复吗？当前数据将被覆盖。`,
+						type: 'danger',
+						confirmText: '确认恢复',
+						confirmCallback: () => {
+							if (itemStore.importData(backup)) {
+								uni.showToast({ title: '恢复成功', icon: 'success' });
+							}
+						}
+					});
+				} else {
+					uni.showToast({ title: '未发现备份', icon: 'none' });
+				}
+			} else {
+				// 从剪贴板导入
+				uni.getClipboardData({
+					success: (clipboardRes) => {
+						const data = clipboardRes.data;
+						if (data && data.includes('items')) {
+							showCustomPopup({
+								title: '确认导入',
+								content: '识别到合法的收纳数据，确认导入吗？当前数据将被覆盖。',
+								type: 'danger',
+								confirmText: '确认导入',
+								confirmCallback: () => {
+									if (itemStore.importData(data)) {
+										uni.showToast({ title: '导入成功', icon: 'success' });
+									} else {
+										uni.showToast({ title: '解析失败', icon: 'none' });
+									}
+								}
+							});
+						} else {
+							uni.showToast({ title: '剪贴板无有效数据', icon: 'none' });
+						}
+					}
+				});
+			}
+		}
+	});
+};
+
+// 4. 确认清空内容
+const confirmClear = () => {
+	itemStore.resetAllData();
+	uni.showToast({
+		title: '已全部清空',
+		icon: 'success'
+	});
+	// 延迟回到首页
+	setTimeout(() => {
+		uni.reLaunch({ url: '/pages/index/index' });
+	}, 1500);
 }
 </script>
 
 <style lang="scss" scoped>
+/* 统一风格的自定义弹窗样式 (完全对齐区域页面) */
+.popup-mask {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+	backdrop-filter: blur(4px);
+}
+
+.popup-content {
+	width: 85%;
+	background-color: #fafaf3;
+	border-radius: 64rpx;
+	padding: 48rpx;
+	box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.1);
+	animation: popupScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popupScale {
+	from { transform: scale(0.9); opacity: 0; }
+	to { transform: scale(1); opacity: 1; }
+}
+
+.popup-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 48rpx;
+
+	.popup-title {
+		font-size: 40rpx;
+		font-weight: 800;
+		color: $shouna-on-surface;
+	}
+
+	.close-btn {
+		padding: 8rpx;
+	}
+}
+
+.popup-body {
+	.warning-box {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 32rpx;
+		padding: 64rpx 48rpx;
+		background-color: #f1f3e8; /* 默认淡雅绿灰 */
+		border-radius: 40rpx;
+		margin-bottom: 48rpx;
+		border: 2rpx solid rgba(0,0,0,0.02);
+		
+		&.is-success {
+			background-color: #edf5ea; /* 成功绿 */
+			border-color: rgba(75, 102, 70, 0.1);
+		}
+		
+		&.is-danger {
+			background-color: #fbeeee; /* 危险红 */
+			border-color: rgba(167, 59, 33, 0.1);
+		}
+
+		.warning-text {
+			font-size: 30rpx;
+			color: $shouna-on-surface;
+			text-align: center;
+			line-height: 1.6;
+			font-weight: 600;
+			
+			&.is-success {
+				color: $shouna-primary;
+			}
+			
+			&.is-danger {
+				color: #a73b21;
+			}
+		}
+	}
+}
+
+.popup-actions {
+	display: flex;
+	gap: 24rpx;
+
+	button {
+		height: 112rpx;
+		border-radius: 100rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 12rpx;
+		font-size: 28rpx;
+		font-weight: 700;
+		border: none;
+		transition: all 0.2s;
+
+		&::after { border: none; }
+		&:active { opacity: 0.8; transform: scale(0.98); }
+	}
+
+	.cancel-popup-btn {
+		flex: 1;
+		background-color: rgba(var(--shouna-tertiary-rgb), 0.1);
+		color: $shouna-on-surface-variant;
+	}
+
+	.delete-popup-btn {
+		flex: 2;
+		background-color: $shouna-error;
+		color: #fff;
+		box-shadow: 0 16rpx 32rpx rgba($shouna-error, 0.2);
+	}
+
+	.save-popup-btn {
+		flex: 2;
+		background-color: var(--shouna-primary);
+		color: #fff;
+		box-shadow: 0 16rpx 32rpx rgba(var(--shouna-primary-rgb), 0.2);
+	}
+}
 .container {
 	min-height: 100vh;
 	background-color: $shouna-background;
@@ -160,7 +497,7 @@ const handleItemClick = (item) => {
 	left: 0;
 	right: 0;
 	height: 88rpx;
-	padding: 0 $shouna-page-padding;
+	padding: 0 220rpx 0 $shouna-page-padding; /* 增加右侧内边距，避开微信胶囊按钮 */
 	padding-top: var(--status-bar-height);
 	background-color: rgba($shouna-background, 0.8);
 	backdrop-filter: blur(10px);
@@ -177,7 +514,7 @@ const handleItemClick = (item) => {
 		.nav-title {
 			font-size: 40rpx;
 			font-weight: 800;
-			color: $shouna-primary;
+			color: var(--shouna-primary);
 			letter-spacing: -1rpx;
 		}
 	}
@@ -186,6 +523,23 @@ const handleItemClick = (item) => {
 .main-content {
 	flex: 1;
 	padding-top: calc(120rpx + var(--status-bar-height));
+}
+
+.content-wrapper {
+	padding: 0 $shouna-page-padding;
+}
+
+.page-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	margin-bottom: 48rpx;
+
+	.page-title {
+		font-size: 60rpx;
+		font-weight: 800;
+		color: $shouna-on-surface;
+	}
 }
 
 .profile-section {
@@ -208,7 +562,7 @@ const handleItemClick = (item) => {
 			right: -32rpx;
 			width: 192rpx;
 			height: 192rpx;
-			background-color: rgba($shouna-primary-container, 0.2);
+			background-color: rgba(var(--shouna-primary-container-rgb), 0.2);
 			border-radius: 50%;
 			filter: blur(40px);
 		}
@@ -260,7 +614,7 @@ const handleItemClick = (item) => {
 		.group-title {
 			font-size: 28rpx;
 			font-weight: 700;
-			color: $shouna-primary;
+			color: var(--shouna-primary);
 			letter-spacing: 4rpx;
 			text-transform: uppercase;
 		}
@@ -358,7 +712,7 @@ const handleItemClick = (item) => {
 
 	.budget-card {
 		grid-column: span 2;
-		background-color: rgba($shouna-primary-container, 0.4);
+		background-color: rgba(var(--shouna-primary-container-rgb), 0.4);
 		border-radius: 32rpx;
 		padding: 40rpx;
 		display: flex;
@@ -388,7 +742,7 @@ const handleItemClick = (item) => {
 		}
 
 		.budget-tag {
-			background-color: $shouna-primary;
+			background-color: var(--shouna-primary);
 			color: #fff;
 			padding: 8rpx 24rpx;
 			border-radius: 100rpx;
@@ -439,7 +793,7 @@ const handleItemClick = (item) => {
 		font-size: 20rpx;
 		font-weight: 700;
 		letter-spacing: 4rpx;
-		color: $shouna-tertiary;
+		color: var(--shouna-tertiary);
 		margin-top: 8rpx;
 	}
 }

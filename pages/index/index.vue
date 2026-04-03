@@ -1,13 +1,12 @@
 <template>
-	<view class="page-home">
+	<view class="page-home" :style="themeStore.cssVars">
 		<!-- 顶部导航栏 -->
 		<view class="nav-bar">
 			<view class="nav-left">
-				<uni-icons type="shop-filled" size="24" color="#4b6646"></uni-icons>
+				<uni-icons type="shop-filled" size="24" color="var(--shouna-primary)"></uni-icons>
 				<text class="nav-title">MAD收纳</text>
 			</view>
 			<view class="nav-right">
-				<uni-icons type="search" size="24" color="#4b6646"></uni-icons>
 			</view>
 		</view>
 
@@ -21,7 +20,7 @@
 
 				<!-- 统计卡片网格 -->
 				<view class="stats-grid">
-					<view class="stats-card" v-for="(item, index) in stats" :key="index">
+					<view class="stats-card" v-for="(item, index) in stats" :key="index" @click="handleStatsClick(item.type)">
 						<view class="card-header">
 							<uni-icons :type="item.icon" size="32" :color="item.color"></uni-icons>
 						</view>
@@ -76,7 +75,7 @@
 					<scroll-view scroll-x class="recent-scroll" v-if="itemStore.recentItems.length > 0">
 						<view class="recent-list">
 							<view class="recent-card" v-for="(item, index) in itemStore.recentItems" :key="item.id || index" @click="goToDetail(item)">
-								<image class="item-img" :src="item.image" mode="aspectFill"></image>
+								<image class="item-img" :src="item.image" mode="aspectFit"></image>
 								<text class="item-name">{{ item.name }}</text>
 								<text class="item-cost">日均成本: {{ item.cost }}</text>
 							</view>
@@ -101,9 +100,11 @@
 import { computed } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import { useItemStore } from '@/stores/item';
+import { useThemeStore } from '@/stores/theme';
 import TabBar from '@/components/tab-bar/tab-bar.vue';
 
 const itemStore = useItemStore();
+const themeStore = useThemeStore();
 
 onShow(() => {
 	uni.hideTabBar();
@@ -121,11 +122,25 @@ const greeting = computed(() => {
 });
 
 const stats = computed(() => [
-	{ label: '总物品数', value: itemStore.totalCount.toLocaleString(), icon: 'list', color: '#4b6646' },
-	{ label: '总价值', value: `¥${(itemStore.totalValue / 1000).toFixed(1)}k`, icon: 'wallet-filled', color: '#4f6549' },
-	{ label: '日均消耗', value: '¥' + (itemStore.items.reduce((sum, item) => sum + parseFloat(item.cost.replace('¥', '') || 0), 0)).toFixed(1), unit: '/日', icon: 'calendar-filled', color: '#3f5a3a' },
-	{ label: '心仪物品', value: itemStore.favoriteItems.length.toString(), icon: 'heart-filled', color: '#5f6056' }
+	{ label: '总物品数', value: itemStore.totalCount.toLocaleString(), icon: 'list', color: 'var(--shouna-primary)', type: 'all' },
+	{ label: '总价值', value: `¥${(itemStore.totalValue / 1000).toFixed(1)}k`, icon: 'wallet-filled', color: 'var(--shouna-secondary)', type: 'stats' },
+	{ label: '日均消耗', value: '¥' + (itemStore.items.reduce((sum, item) => {
+		const costStr = item.cost || '¥0.00';
+		return sum + parseFloat(costStr.replace('¥', '') || 0);
+	}, 0)).toFixed(1), unit: '/日', icon: 'calendar-filled', color: 'var(--shouna-primary-dim)', type: 'stats' },
+	{ label: '心仪物品', value: itemStore.favoriteItems.length.toString(), icon: 'heart-filled', color: 'var(--shouna-tertiary)', type: 'favorite' }
 ]);
+
+const handleStatsClick = (type) => {
+	if (type === 'all') {
+		uni.switchTab({ url: '/pages/items/items' });
+	} else if (type === 'favorite') {
+		itemStore.setFilterFavorite(true);
+		uni.switchTab({ url: '/pages/items/items' });
+	} else if (type === 'stats') {
+		uni.switchTab({ url: '/pages/statistics/statistics' });
+	}
+};
 
 const goToAdd = () => {
 	uni.navigateTo({
@@ -140,7 +155,7 @@ const goToDetail = (item) => {
 };
 
 const viewAll = () => {
-	uni.navigateTo({
+	uni.switchTab({
 		url: '/pages/items/items'
 	});
 };
@@ -175,7 +190,7 @@ const handleAction = (type) => {
 		left: 0;
 		right: 0;
 		height: 88rpx;
-		padding: 0 $shouna-page-padding;
+		padding: 0 220rpx 0 $shouna-page-padding; /* 增加右侧内边距，避开微信胶囊按钮 */
 		padding-top: var(--status-bar-height);
 		background-color: rgba($shouna-background, 0.8);
 		backdrop-filter: blur(10px);
@@ -192,7 +207,7 @@ const handleAction = (type) => {
 			.nav-title {
 				font-size: 40rpx;
 				font-weight: 800;
-				color: $shouna-primary;
+				color: var(--shouna-primary);
 				letter-spacing: -1rpx;
 			}
 		}
@@ -213,7 +228,7 @@ const handleAction = (type) => {
 		
 		.sub-greeting {
 			font-size: 28rpx;
-			color: $shouna-tertiary;
+			color: var(--shouna-tertiary);
 			margin-bottom: 8rpx;
 			display: block;
 		}
@@ -347,45 +362,56 @@ const handleAction = (type) => {
 	}
 
 	/* 最近收纳 */
+	.recent-section {
+		margin-bottom: 60rpx;
+		
+		/* 标题保持在 content-wrapper 内部的对齐 */
+		.section-header {
+			padding: 0; 
+		}
+	}
+	
 	.recent-scroll {
-		width: 100%;
+		width: calc(100% + #{$shouna-page-padding} * 2);
+		margin-left: -$shouna-page-padding;
+		margin-right: -$shouna-page-padding;
 		white-space: nowrap;
-		margin: 0 (-$shouna-page-padding);
-		padding: 0 $shouna-page-padding;
 		box-sizing: border-box;
 		
 		.recent-list {
 			display: inline-flex;
 			gap: 24rpx;
-			padding-bottom: 40rpx;
+			padding: 0 $shouna-page-padding 40rpx; /* 在内部列表加左右内边距，让第一个卡片对齐，最后一个卡片滑出边缘 */
 		}
 		
 		.recent-card {
-			width: 260rpx;
+			width: 320rpx;
 			background-color: #fff;
-			border-radius: 32rpx;
-			padding: 20rpx;
-			box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.03);
-			border: 1rpx solid rgba($shouna-tertiary, 0.05);
+			border-radius: 40rpx;
+			padding: 24rpx;
+			box-shadow: 0 8rpx 20rpx rgba(0,0,0,0.04);
+			border: 1rpx solid rgba($shouna-tertiary, 0.08);
 			
 			.item-img {
 				width: 100%;
-				height: 200rpx;
-				border-radius: 20rpx;
-				margin-bottom: 20rpx;
+				height: 240rpx;
+				border-radius: 28rpx;
+				margin-bottom: 24rpx;
+				background-color: $shouna-surface-container-low;
 			}
 			
 			.item-name {
-				font-size: 26rpx;
+				font-size: 28rpx;
 				font-weight: bold;
 				color: $shouna-on-surface;
 				display: block;
-				margin-bottom: 4rpx;
+				margin-bottom: 8rpx;
 			}
 			
 			.item-cost {
-				font-size: 18rpx;
+				font-size: 20rpx;
 				color: $shouna-tertiary;
+				opacity: 0.8;
 			}
 		}
 	}

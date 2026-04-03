@@ -7,7 +7,6 @@
 				<text class="nav-title">MAD收纳</text>
 			</view>
 			<view class="nav-right">
-				<uni-icons type="search" size="24" color="#4b6646"></uni-icons>
 			</view>
 		</view>
 
@@ -229,9 +228,10 @@ const handleDeleteArea = () => {
 };
 
 const filterByArea = (areaName) => {
-	// 跳转到物品列表并带上区域过滤参数
-	uni.navigateTo({
-		url: `/pages/items/items?area=${areaName}`
+	// 通过 Store 传递区域过滤参数
+	itemStore.setFilterArea(areaName);
+	uni.switchTab({
+		url: '/pages/items/items'
 	});
 };
 </script>
@@ -252,7 +252,7 @@ const filterByArea = (areaName) => {
 		left: 0;
 		right: 0;
 		height: 88rpx;
-		padding: 0 $shouna-page-padding;
+		padding: 0 220rpx 0 $shouna-page-padding; /* 增加右侧内边距，避开微信胶囊按钮 */
 		padding-top: var(--status-bar-height);
 		background-color: rgba($shouna-background, 0.8);
 		backdrop-filter: blur(10px);

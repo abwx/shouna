@@ -7,7 +7,6 @@
 				<text class="nav-title">MAD收纳</text>
 			</view>
 			<view class="nav-right">
-				<uni-icons type="search" size="24" color="#4b6646"></uni-icons>
 			</view>
 		</view>
 
@@ -28,7 +27,7 @@
 					</view>
 				</view>
 
-				<!-- 概览卡片 -->
+				<!-- 概览卡片 (Bento Grid) -->
 				<view class="overview-section">
 					<view class="card-total">
 						<view class="total-info">
@@ -37,7 +36,7 @@
 							<view class="trend">
 								<uni-icons :type="trendValue >= 0 ? 'trending-up' : 'trending-down'" size="14" :color="trendValue >= 0 ? '#4b6646' : '#a73b21'"></uni-icons>
 								<text class="trend-text" :style="{ color: trendValue >= 0 ? '#4b6646' : '#a73b21' }">
-									较上{{ timeRanges[currentTimeRange] }}{{ trendValue >= 0 ? '增长' : '下降' }} {{ Math.abs(trendValue) }}%
+									{{ Math.abs(trendValue) }}%
 								</text>
 							</view>
 						</view>
@@ -46,15 +45,15 @@
 							<path d="M10,90 Q30,10 90,40" fill="none" stroke="#4b6646" stroke-opacity="0.1" stroke-linecap="round" stroke-width="2"></path>
 						</svg>
 					</view>
-					<view class="overview-grid">
-						<view class="card-small">
-							<text class="label">资产估值</text>
-							<text class="value">¥{{ (totalValueByTime / 1000).toFixed(1) }}k</text>
-						</view>
-						<view class="card-small">
-							<text class="label">平均{{ timeRanges[currentTimeRange] === '年' ? '月' : '日' }}支出</text>
-							<text class="value">¥{{ averageByTime.toFixed(2) }}</text>
-						</view>
+					
+					<view class="card-small asset-card">
+						<text class="label">资产估值</text>
+						<text class="value">¥{{ (totalValueByTime / 1000).toFixed(1) }}k</text>
+					</view>
+					
+					<view class="card-small avg-card">
+						<text class="label">平均{{ timeRanges[currentTimeRange] === '年' ? '月' : '日' }}支出</text>
+						<text class="value">¥{{ averageByTime.toFixed(0) }}</text>
 					</view>
 				</view>
 
@@ -63,21 +62,14 @@
 					<!-- 趋势图 -->
 					<view class="chart-card">
 						<view class="chart-header">
-							<text class="chart-title">消费趋势 (近30天)</text>
-							<text class="chart-subtitle">手绘视图</text>
+							<text class="chart-title">消费趋势 (近{{ trendRangeText }})</text>
+							<text class="chart-subtitle">折线图</text>
 						</view>
 						<view class="line-chart-box">
-							<svg class="line-chart-svg" viewBox="0 0 300 100">
-								<path class="hand-drawn-path" d="M0,80 Q20,75 40,85 T80,60 T120,70 T160,40 T200,50 T240,20 T300,30" fill="none" stroke="#4b6646" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
-								<line stroke="#4b6646" stroke-opacity="0.05" x1="0" x2="300" y1="20" y2="20"></line>
-								<line stroke="#4b6646" stroke-opacity="0.05" x1="0" x2="300" y1="50" y2="50"></line>
-								<line stroke="#4b6646" stroke-opacity="0.05" x1="0" x2="300" y1="80" y2="80"></line>
-							</svg>
+							<canvas canvas-id="trendCanvas" id="trendCanvas" class="trend-canvas"></canvas>
 						</view>
 						<view class="chart-labels">
-							<text>10月01日</text>
-							<text>10月15日</text>
-							<text>今天</text>
+							<text v-for="(date, dIndex) in chartDates" :key="dIndex">{{ date }}</text>
 						</view>
 					</view>
 
@@ -86,8 +78,16 @@
 						<view class="donut-box">
 							<svg class="donut-svg" viewBox="0 0 36 36">
 								<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#e2e4d8" stroke-width="3"></path>
-								<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#4b6646" stroke-dasharray="45, 100" stroke-width="3"></path>
-								<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#ccebc2" stroke-dasharray="25, 100" stroke-dashoffset="-45" stroke-width="3"></path>
+								<path
+									v-for="(seg, segIndex) in donutSegments"
+									:key="segIndex"
+									d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+									fill="none"
+									:stroke="seg.color"
+									:stroke-dasharray="`${seg.ratio}, 100`"
+									:stroke-dashoffset="seg.dashoffset"
+									stroke-width="3"
+								></path>
 							</svg>
 							<view class="donut-center">
 								<text class="center-label">主类目</text>
@@ -175,19 +175,59 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick, getCurrentInstance, watch } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import { useItemStore } from '@/stores/item';
 import TabBar from '@/components/tab-bar/tab-bar.vue';
 
 const itemStore = useItemStore();
+const instance = getCurrentInstance();
+
+const parseYMD = (str) => {
+	if (!str) return null;
+	const parts = String(str).split('-');
+	if (parts.length !== 3) return null;
+	const y = Number(parts[0]);
+	const m = Number(parts[1]);
+	const d = Number(parts[2]);
+	if (!y || !m || !d) return null;
+	return new Date(y, m - 1, d);
+};
+
+const pad2 = (n) => String(n).padStart(2, '0');
+
+const formatMD = (date) => `${date.getMonth() + 1}月${pad2(date.getDate())}日`;
 
 onShow(() => {
 	uni.hideTabBar();
+	nextTick(() => {
+		setTimeout(drawTrendChart, 500);
+	});
 });
 
 const timeRanges = ['周', '月', '年'];
 const currentTimeRange = ref(1);
+
+const trendConfig = computed(() => {
+	if (currentTimeRange.value === 0) return { type: 'day', days: 7, points: 7, text: '7天' };
+	if (currentTimeRange.value === 1) return { type: 'day', days: 30, points: 12, text: '30天' };
+	return { type: 'month', days: 365, points: 12, text: '12个月' };
+});
+
+const trendRangeText = computed(() => trendConfig.value.text);
+
+const chartDates = computed(() => {
+	const now = new Date();
+	if (trendConfig.value.type === 'month') {
+		const start = new Date(now.getFullYear(), now.getMonth() - 11, 1);
+		const mid = new Date(now.getFullYear(), now.getMonth() - 5, 1);
+		return [`${start.getFullYear()}-${pad2(start.getMonth() + 1)}`, `${mid.getFullYear()}-${pad2(mid.getMonth() + 1)}`, '本月'];
+	}
+
+	const startDate = new Date(now.getTime() - (trendConfig.value.days - 1) * 24 * 60 * 60 * 1000);
+	const midDate = new Date(now.getTime() - Math.floor(trendConfig.value.days / 2) * 24 * 60 * 60 * 1000);
+	return [formatMD(startDate), formatMD(midDate), '今天'];
+});
 
 const filteredItemsByTime = computed(() => {
 	const now = new Date();
@@ -195,7 +235,8 @@ const filteredItemsByTime = computed(() => {
 	
 	return items.filter(item => {
 		if (!item.buyDate) return false;
-		const buyDate = new Date(item.buyDate);
+		const buyDate = parseYMD(item.buyDate);
+		if (!buyDate) return false;
 		const diffMs = now - buyDate;
 		const diffDays = diffMs / (1000 * 60 * 60 * 24);
 		
@@ -219,34 +260,71 @@ const averageByTime = computed(() => {
 });
 
 const trendValue = computed(() => {
-	// 模拟趋势数据，实际应用中需要对比上一个周期
-	return currentTimeRange.value === 0 ? 5.2 : currentTimeRange.value === 1 ? 12.5 : -2.4;
+	const now = new Date();
+	const days = currentTimeRange.value === 0 ? 7 : currentTimeRange.value === 1 ? 30 : 365;
+	const currStart = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+	const prevStart = new Date(now.getTime() - days * 2 * 24 * 60 * 60 * 1000);
+	const prevEnd = currStart;
+
+	const sumBetween = (start, end) => {
+		return itemStore.items.reduce((sum, item) => {
+			const buyDate = parseYMD(item.buyDate);
+			if (!buyDate) return sum;
+			if (buyDate >= start && buyDate < end) {
+				return sum + (parseFloat(item.price) || 0);
+			}
+			return sum;
+		}, 0);
+	};
+
+	const curr = sumBetween(currStart, now);
+	const prev = sumBetween(prevStart, prevEnd);
+	if (prev === 0) return curr === 0 ? 0 : 100;
+	const pct = ((curr - prev) / prev) * 100;
+	return parseFloat(pct.toFixed(1));
 });
 
 const mainCategory = computed(() => {
 	if (filteredItemsByTime.value.length === 0) return '无';
-	const counts = {};
+	const sums = {};
 	filteredItemsByTime.value.forEach(item => {
-		const cat = item.tags[0] || '默认';
-		counts[cat] = (counts[cat] || 0) + 1;
+		const cat = (item.tags && item.tags[0]) ? item.tags[0] : '其他';
+		sums[cat] = (sums[cat] || 0) + (parseFloat(item.price) || 0);
 	});
-	return Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+	return Object.entries(sums).sort((a, b) => b[1] - a[1])[0][0] || '无';
 });
 
 const categoryData = computed(() => {
 	if (filteredItemsByTime.value.length === 0) return [];
-	const counts = {};
+	const sums = {};
 	filteredItemsByTime.value.forEach(item => {
-		const cat = item.tags[0] || '其他';
-		counts[cat] = (counts[cat] || 0) + 1;
+		const cat = (item.tags && item.tags[0]) ? item.tags[0] : '其他';
+		sums[cat] = (sums[cat] || 0) + (parseFloat(item.price) || 0);
 	});
-	const total = filteredItemsByTime.value.length;
+	const total = totalValueByTime.value;
 	const colors = ['#4b6646', '#ccebc2', '#e2e4d8', '#5f6056'];
-	return Object.entries(counts).map(([name, count], index) => ({
-		name,
-		percent: Math.round((count / total) * 100),
-		color: colors[index % colors.length]
-	}));
+	return Object.entries(sums)
+		.sort((a, b) => b[1] - a[1])
+		.map(([name, value], index) => {
+			const ratio = total ? (value / total) * 100 : 0;
+			return {
+				name,
+				value,
+				ratio: parseFloat(ratio.toFixed(2)),
+				percent: Math.round(ratio),
+				color: colors[index % colors.length]
+			};
+		});
+});
+
+const donutSegments = computed(() => {
+	const top = categoryData.value.slice(0, 3).filter(i => i.ratio > 0);
+	let offset = 0;
+	return top.map(seg => {
+		const dashoffset = -offset;
+		offset += seg.ratio;
+		return { ...seg, dashoffset };
+	});
 });
 
 const topExpensiveItems = computed(() => {
@@ -257,9 +335,151 @@ const topExpensiveItems = computed(() => {
 
 const costPerformanceItems = computed(() => {
 	return [...filteredItemsByTime.value]
-		.sort((a, b) => parseFloat(a.cost.replace('¥', '')) - parseFloat(b.cost.replace('¥', '')))
+		.sort((a, b) => {
+			const costA = parseFloat((a.cost || '¥0.00').replace('¥', '') || 0);
+			const costB = parseFloat((b.cost || '¥0.00').replace('¥', '') || 0);
+			return costA - costB;
+		})
 		.slice(0, 5);
 });
+
+const trendSeriesY = computed(() => {
+	const now = new Date();
+	const conf = trendConfig.value;
+	const items = itemStore.items;
+
+	const totals = [];
+
+	if (conf.type === 'month') {
+		const buckets = Array.from({ length: conf.points }, (_, idx) => {
+			const d = new Date(now.getFullYear(), now.getMonth() - (conf.points - 1 - idx), 1);
+			return { y: d.getFullYear(), m: d.getMonth() };
+		});
+		buckets.forEach(b => {
+			const sum = items.reduce((acc, item) => {
+				const buyDate = parseYMD(item.buyDate);
+				if (!buyDate) return acc;
+				if (buyDate.getFullYear() === b.y && buyDate.getMonth() === b.m) {
+					return acc + (parseFloat(item.price) || 0);
+				}
+				return acc;
+			}, 0);
+			totals.push(sum);
+		});
+	} else {
+		const days = conf.days;
+		const start = new Date(now.getTime() - (days - 1) * 24 * 60 * 60 * 1000);
+		const dayTotals = [];
+		for (let i = 0; i < days; i++) {
+			const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+			const key = `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+			const sum = items.reduce((acc, item) => {
+				const buyDate = parseYMD(item.buyDate);
+				if (!buyDate) return acc;
+				const itemKey = `${buyDate.getFullYear()}-${pad2(buyDate.getMonth() + 1)}-${pad2(buyDate.getDate())}`;
+				if (itemKey === key) return acc + (parseFloat(item.price) || 0);
+				return acc;
+			}, 0);
+			dayTotals.push(sum);
+		}
+
+		if (conf.points >= dayTotals.length) {
+			totals.push(...dayTotals);
+		} else {
+			const groupSize = Math.ceil(dayTotals.length / conf.points);
+			for (let i = 0; i < dayTotals.length; i += groupSize) {
+				totals.push(dayTotals.slice(i, i + groupSize).reduce((a, b) => a + b, 0));
+			}
+		}
+	}
+
+	const max = Math.max(...totals, 0);
+	const safeMax = max > 0 ? max : 1;
+	return totals.map(v => 100 - (v / safeMax) * 100);
+});
+
+const drawTrendChart = () => {
+	const ctx = uni.createCanvasContext('trendCanvas', instance);
+	if (!ctx) return;
+	const data = trendSeriesY.value;
+	if (!data || data.length < 2) return;
+
+	const query = uni.createSelectorQuery().in(instance);
+	query.select('.trend-canvas').boundingClientRect(res => {
+		if (!res || !res.width || !res.height) return;
+
+		const w = res.width;
+		const h = res.height;
+		const step = w / (data.length - 1);
+
+		ctx.setStrokeStyle('rgba(75, 102, 70, 0.1)');
+		ctx.setLineWidth(1);
+		[20, 50, 80].forEach(yPercent => {
+			const y = (yPercent / 100) * h;
+			ctx.moveTo(0, y);
+			ctx.lineTo(w, y);
+		});
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.setStrokeStyle('#4b6646');
+		ctx.setLineWidth(3);
+		ctx.setLineCap('round');
+		ctx.setLineJoin('round');
+
+		data.forEach((val, i) => {
+			const x = i * step;
+			const y = (val / 100) * h;
+			if (i === 0) {
+				ctx.moveTo(x, y);
+			} else {
+				ctx.lineTo(x, y);
+			}
+		});
+		ctx.stroke();
+
+		const lastIdx = data.length - 1;
+		const lastX = lastIdx * step;
+		const lastY = (data[lastIdx] / 100) * h;
+
+		ctx.beginPath();
+		ctx.setFillStyle('#4b6646');
+		ctx.arc(lastX, lastY, 4, 0, 2 * Math.PI);
+		ctx.fill();
+
+		ctx.beginPath();
+		const gradient = ctx.createLinearGradient(0, 0, 0, h);
+		gradient.addColorStop(0, 'rgba(75, 102, 70, 0.2)');
+		gradient.addColorStop(1, 'rgba(75, 102, 70, 0)');
+		ctx.setFillStyle(gradient);
+
+		ctx.moveTo(0, h);
+		data.forEach((val, i) => {
+			ctx.lineTo(i * step, (val / 100) * h);
+		});
+		ctx.lineTo(w, h);
+		ctx.closePath();
+		ctx.fill();
+
+		ctx.draw();
+	}).exec();
+};
+
+watch(currentTimeRange, () => {
+	nextTick(() => {
+		setTimeout(drawTrendChart, 100);
+	});
+});
+
+watch(
+	() => itemStore.items,
+	() => {
+		nextTick(() => {
+			setTimeout(drawTrendChart, 100);
+		});
+	},
+	{ deep: true }
+);
 </script>
 
 <style lang="scss" scoped>
@@ -277,7 +497,7 @@ const costPerformanceItems = computed(() => {
 	left: 0;
 	right: 0;
 	height: 88rpx;
-	padding: 0 $shouna-page-padding;
+	padding: 0 220rpx 0 $shouna-page-padding; /* 增加右侧内边距，避开微信胶囊按钮 */
 	padding-top: var(--status-bar-height);
 	background-color: rgba($shouna-background, 0.8);
 	backdrop-filter: blur(10px);
@@ -346,17 +566,22 @@ const costPerformanceItems = computed(() => {
 }
 
 .overview-section {
-	display: flex;
-	flex-direction: column;
-	gap: 32rpx;
+	display: grid;
+	grid-template-columns: 1.2fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	gap: 24rpx;
 	margin-bottom: 64rpx;
 
 	.card-total {
+		grid-row: span 2;
 		background-color: rgba(204, 235, 194, 0.4);
-		padding: 48rpx;
-		border-radius: 32rpx;
+		padding: 40rpx;
+		border-radius: 48rpx;
 		position: relative;
 		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 
 		.total-info {
 			position: relative;
@@ -365,65 +590,75 @@ const costPerformanceItems = computed(() => {
 			flex-direction: column;
 
 			.label {
-				font-size: 28rpx;
-				font-weight: 500;
-				color: rgba(62, 88, 57, 0.8);
+				font-size: 24rpx;
+				font-weight: 600;
+				color: rgba(62, 88, 57, 0.6);
 				margin-bottom: 8rpx;
 			}
 
 			.amount {
-				font-size: 72rpx;
+				font-size: 64rpx;
 				font-weight: 800;
 				color: $shouna-on-primary-container;
+				line-height: 1;
 			}
 
 			.trend {
-				margin-top: 32rpx;
+				margin-top: 24rpx;
 				display: flex;
 				align-items: center;
-				gap: 8rpx;
+				gap: 4rpx;
+				background-color: rgba(255, 255, 255, 0.5);
+				width: fit-content;
+				padding: 4rpx 16rpx;
+				border-radius: 100rpx;
 
 				.trend-text {
-					font-size: 24rpx;
-					font-weight: 600;
-					color: $shouna-primary;
+					font-size: 20rpx;
+					font-weight: 700;
 				}
 			}
 		}
 
 		.bg-svg {
 			position: absolute;
-			right: -32rpx;
-			bottom: -32rpx;
-			width: 256rpx;
-			height: 256rpx;
+			right: -20rpx;
+			bottom: -20rpx;
+			width: 180rpx;
+			height: 180rpx;
+			opacity: 0.5;
 		}
 	}
 
-	.overview-grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 32rpx;
+	.card-small {
+		background-color: $shouna-surface-container-low;
+		padding: 32rpx;
+		border-radius: 40rpx;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 
-		.card-small {
-			background-color: $shouna-surface-container-low;
-			padding: 40rpx;
-			border-radius: 32rpx;
-			display: flex;
-			flex-direction: column;
+		&.asset-card {
+			background-color: #f6f7f0;
+		}
+		
+		&.avg-card {
+			background-color: #f0f2e8;
+		}
 
-			.label {
-				font-size: 24rpx;
-				font-weight: 500;
-				color: $shouna-tertiary;
-				margin-bottom: 8rpx;
-			}
+		.label {
+			font-size: 20rpx;
+			font-weight: 600;
+			color: $shouna-tertiary;
+			margin-bottom: 8rpx;
+			text-transform: uppercase;
+			letter-spacing: 1rpx;
+		}
 
-			.value {
-				font-size: 40rpx;
-				font-weight: 700;
-				color: $shouna-on-surface;
-			}
+		.value {
+			font-size: 36rpx;
+			font-weight: 800;
+			color: $shouna-on-surface;
 		}
 	}
 }
@@ -462,11 +697,13 @@ const costPerformanceItems = computed(() => {
 		.line-chart-box {
 			height: 200rpx;
 			margin-bottom: 32rpx;
+			background-color: rgba(75, 102, 70, 0.03);
+			border-radius: 16rpx;
+			overflow: hidden;
 
-			.line-chart-svg {
+			.trend-canvas {
 				width: 100%;
 				height: 100%;
-				overflow: visible;
 			}
 		}
 

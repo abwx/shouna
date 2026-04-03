@@ -86,8 +86,9 @@ const _sfc_main = {
       });
     };
     const filterByArea = (areaName) => {
-      common_vendor.index.navigateTo({
-        url: `/pages/items/items?area=${areaName}`
+      itemStore.setFilterArea(areaName);
+      common_vendor.index.switchTab({
+        url: "/pages/items/items"
       });
     };
     return (_ctx, _cache) => {
@@ -98,27 +99,22 @@ const _sfc_main = {
           color: "#4b6646"
         }),
         b: common_vendor.p({
-          type: "search",
-          size: "24",
-          color: "#4b6646"
-        }),
-        c: common_vendor.p({
           type: "plus",
           size: "20",
           color: "#fff"
         }),
-        d: common_vendor.o(($event) => showAddPopup.value = true, "ad"),
-        e: common_vendor.t(common_vendor.unref(itemStore).areas.length),
-        f: common_vendor.f(areaStats.value, (area, index, i0) => {
+        c: common_vendor.o(($event) => showAddPopup.value = true, "14"),
+        d: common_vendor.t(common_vendor.unref(itemStore).areas.length),
+        e: common_vendor.f(areaStats.value, (area, index, i0) => {
           return {
-            a: "29e38c8f-3-" + i0,
+            a: "5748b6dc-2-" + i0,
             b: common_vendor.p({
               type: area.icon,
               size: "24",
               color: area.count > 0 ? area.color : "#5d6057"
             }),
             c: area.count > 0 ? "#ccebc2" : "#eeefe5",
-            d: "29e38c8f-4-" + i0,
+            d: "5748b6dc-3-" + i0,
             e: common_vendor.o(($event) => handleEditArea(area), index),
             f: common_vendor.t(area.name),
             g: common_vendor.t(area.count),
@@ -126,28 +122,28 @@ const _sfc_main = {
             i: common_vendor.o(($event) => filterByArea(area.name), index)
           };
         }),
-        g: common_vendor.p({
+        f: common_vendor.p({
           type: "compose",
           size: "20",
           color: "#b1b3a8"
         }),
-        h: common_vendor.p({
+        g: common_vendor.p({
           type: "compose",
           size: "40",
           color: "#5f6056"
         }),
-        i: showAddPopup.value
+        h: showAddPopup.value
       }, showAddPopup.value ? common_vendor.e({
-        j: common_vendor.t(isEditMode.value ? "编辑区域" : "新建区域"),
-        k: common_vendor.p({
+        i: common_vendor.t(isEditMode.value ? "编辑区域" : "新建区域"),
+        j: common_vendor.p({
           type: "closeempty",
           size: "20",
           color: "#5f6056"
         }),
-        l: common_vendor.o(closePopup, "1d"),
-        m: newAreaForm.name,
-        n: common_vendor.o(($event) => newAreaForm.name = $event.detail.value, "18"),
-        o: common_vendor.f(presetColors, (color, k0, i0) => {
+        k: common_vendor.o(closePopup, "99"),
+        l: newAreaForm.name,
+        m: common_vendor.o(($event) => newAreaForm.name = $event.detail.value, "7f"),
+        n: common_vendor.f(presetColors, (color, k0, i0) => {
           return common_vendor.e({
             a: newAreaForm.color === color
           }, newAreaForm.color === color ? {} : {}, {
@@ -157,9 +153,9 @@ const _sfc_main = {
             e: common_vendor.o(($event) => newAreaForm.color = color, color)
           });
         }),
-        p: common_vendor.f(presetIcons, (icon, k0, i0) => {
+        o: common_vendor.f(presetIcons, (icon, k0, i0) => {
           return {
-            a: "29e38c8f-7-" + i0,
+            a: "5748b6dc-6-" + i0,
             b: common_vendor.p({
               type: icon,
               size: "24",
@@ -170,28 +166,28 @@ const _sfc_main = {
             e: common_vendor.o(($event) => newAreaForm.icon = icon, icon)
           };
         }),
-        q: isEditMode.value
+        p: isEditMode.value
       }, isEditMode.value ? {
-        r: common_vendor.p({
+        q: common_vendor.p({
           type: "trash-filled",
           size: "18",
           color: "#a73b21"
         }),
-        s: common_vendor.o(handleDeleteArea, "ef")
+        r: common_vendor.o(handleDeleteArea, "77")
       } : {}, {
-        t: common_vendor.t(isEditMode.value ? "保存修改" : "保存新区域"),
-        v: common_vendor.p({
+        s: common_vendor.t(isEditMode.value ? "保存修改" : "保存新区域"),
+        t: common_vendor.p({
           type: "checkmarkempty",
           size: "18",
           color: "#fff"
         }),
-        w: isEditMode.value ? 1 : "",
-        x: common_vendor.o(confirmSaveArea, "00"),
-        y: common_vendor.o(() => {
-        }, "f5"),
-        z: common_vendor.o(closePopup, "1b")
+        v: isEditMode.value ? 1 : "",
+        w: common_vendor.o(confirmSaveArea, "1d"),
+        x: common_vendor.o(() => {
+        }, "3a"),
+        y: common_vendor.o(closePopup, "7b")
       }) : {}, {
-        A: common_vendor.p({
+        z: common_vendor.p({
           currentTab: 2
         })
       });
